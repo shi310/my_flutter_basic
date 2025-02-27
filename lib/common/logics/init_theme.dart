@@ -1,5 +1,4 @@
 import 'package:my_flutter_basic/common/common.dart';
-import 'package:my_utils/utils/my_cache.dart';
 
 Future<void> initTheme() async {
   // 初始化主题

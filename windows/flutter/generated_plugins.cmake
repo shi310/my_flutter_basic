@@ -8,8 +8,6 @@ list(APPEND FLUTTER_PLUGIN_LIST
   my_deep_link
   my_device_info
   my_gallery
-  my_utils
-  my_widgets
   permission_handler_windows
 )
 

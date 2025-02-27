@@ -1,5 +1,5 @@
 import 'package:my_deep_link/my_deep_link_method.dart';
-import 'package:my_utils/my_utils.dart';
+import 'package:my_flutter_basic/common/common.dart';
 
 Future<void> initDeepLink() async {
   await MyDeepLink.getDeepLink(

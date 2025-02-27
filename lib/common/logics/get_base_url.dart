@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:my_flutter_basic/common/common.dart';
-import 'package:my_utils/utils/my_logger.dart';
 
 Future<void> getBaseUrl({
   required List<String> urls,

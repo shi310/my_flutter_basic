@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:my_flutter_basic/common/common.dart';
-import 'package:my_utils/my_utils.dart';
 
 void setMyWss() {
   if (UserController.to.myWss != null) {

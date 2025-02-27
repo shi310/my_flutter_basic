@@ -1,6 +1,6 @@
 import 'package:my_flutter_basic/common/common.dart';
 import 'package:get/get.dart';
-import 'package:my_utils/utils/utils.dart';
+
 
 Future<void> initLang() async {
   // 初始化语言

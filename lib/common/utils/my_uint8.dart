@@ -31,7 +31,7 @@ class MyUint8 {
     try {
       List<int> stringBytes = utf8.encode(jsonString);
       List<int>? compressedBytes = GZipEncoder().encode(stringBytes);
-      return Uint8List.fromList(compressedBytes ?? []);
+      return Uint8List.fromList(compressedBytes);
     } catch (e) {
       log('二进制压缩失败 --> $e');
       return Uint8List.fromList([]);

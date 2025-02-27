@@ -21,10 +21,6 @@ dependencies:
   my_device_info:
     path: ./plugins/my_device_info
 
-  # 自定义方法集合
-  my_utils:
-    path: ./plugins/my_utils
-
   # 深度链接
   my_deep_link:
       path: ./plugins/my_deep_link
@@ -33,10 +29,6 @@ dependencies:
   my_gallery:
     path: ./plugins/my_gallery
 
-  # 常用组件
-  my_widgets:
-    path: ./plugins/my_widgets
-
   # GetX
   get: ^5.0.0-release-candidate-9.2.1
 
@@ -44,13 +36,43 @@ dependencies:
   flutter_svg: ^2.0.10+1
 
   # lottie
-  lottie: ^3.2.0
+  lottie: ^3.3.1
 
   # 音频/音效
-  audioplayers: ^6.1.0
+  audioplayers: ^6.2.0
 
   # 热更新
-  shorebird_code_push: ^2.0.2
+  shorebird_code_push: ^2.0.3
+
+  # 网络请求
+  dio: ^5.8.0+1
+
+  # 缓存
+  flutter_cache_manager: ^3.4.1
+
+  # 加密
+  encrypt: ^5.0.3
+
+  # ws 模块
+  web_socket_channel: ^3.0.2
+
+  # 富文本
+  flutter_html: ^3.0.0-beta.2
+
+  # 下拉刷新
+  pull_to_refresh: ^2.0.0
+
+  # 滑动拓展
+  flutter_slidable: ^4.0.0
+
+  # 视频播放
+  video_player: ^2.9.3
+
+  # 播放器皮肤
+  chewie: ^1.10.0
+
+  # 压缩 / 解压缩
+  archive: ^4.0.3
 
 dev_dependencies:
   flutter_test:

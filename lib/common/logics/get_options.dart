@@ -2,8 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:my_flutter_basic/common/common.dart';
-import 'package:my_utils/utils/my_logger.dart';
-import 'package:my_utils/utils/my_string.dart';
 
 Future<void> getOptions({
   required List<String> urls,

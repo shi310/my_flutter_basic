@@ -6,7 +6,7 @@ import 'package:my_flutter_basic/common/logics/set_my_wss.dart';
 import 'package:my_flutter_basic/common/models/captcha_model.dart';
 import 'package:my_gallery/common/my_picker.dart';
 import 'package:my_gallery/my_gallery_method.dart';
-import 'package:my_utils/utils/utils.dart';
+
 
 import 'controller.dart';
 

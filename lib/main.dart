@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_widgets/my_widgets.dart';
 
 import 'common/common.dart';
 

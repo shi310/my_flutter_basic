@@ -1,0 +1,8 @@
+import 'package:flutter/material.dart';
+import 'package:my_flutter_basic/common/common.dart';
+
+void showMyLoading() => MyAlert.showLoading();
+void hideMyLoading() => MyAlert.hideLoading();
+void showMyBlock() => MyAlert.showBlock();
+void hideMyBlock() => MyAlert.hideBlock();
+void showMySnack({Widget? child}) => MyAlert.showSnack(child: child);

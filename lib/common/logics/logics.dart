@@ -6,6 +6,7 @@ export 'get_options.dart';
 export 'set_my_dio.dart';
 export 'init_lang.dart';
 export 'init_theme.dart';
+export 'set_dialog.dart';
 export 'init_deeplink.dart';
 export 'set_lang.dart';
 export 'set_theme.dart';

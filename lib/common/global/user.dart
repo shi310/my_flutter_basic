@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:my_utils/my_utils.dart';
+import 'package:my_flutter_basic/common/common.dart';
 
 class UserController extends GetxService with WidgetsBindingObserver {
   static UserController get to => Get.find();

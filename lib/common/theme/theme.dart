@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:my_utils/utils/my_logger.dart';
+import 'package:my_flutter_basic/common/common.dart';
 
 part 'my_colors.dart';
 part 'my_styles.dart';
