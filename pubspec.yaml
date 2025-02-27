@@ -21,10 +21,6 @@ dependencies:
   my_device_info:
     path: ./plugins/my_device_info
 
-  # 深度链接
-  my_deep_link:
-      path: ./plugins/my_deep_link
-
   # 图片处理
   my_gallery:
     path: ./plugins/my_gallery
@@ -73,6 +69,9 @@ dependencies:
 
   # 压缩 / 解压缩
   archive: ^4.0.3
+
+  # 深度链接
+  app_links: ^6.4.0
 
 dev_dependencies:
   flutter_test:

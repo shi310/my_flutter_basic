@@ -1,12 +1,12 @@
-import 'package:my_deep_link/my_deep_link_method.dart';
+import 'package:app_links/app_links.dart';
 import 'package:my_flutter_basic/common/common.dart';
 
 Future<void> initDeepLink() async {
-  await MyDeepLink.getDeepLink(
-    onSuccess: (data) async {
-      await commonDeepLink(data);
-    }
-  );
+  final appLinks = AppLinks();
+
+  appLinks.uriLinkStream.listen((uri) async {
+    await commonDeepLink(uri.toString());
+  });
 }
 
 Future<void> commonDeepLink(String data) async {

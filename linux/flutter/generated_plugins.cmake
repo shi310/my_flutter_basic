@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   audioplayers_linux
   file_selector_linux
+  gtk
   my_deep_link
   my_device_info
   my_gallery

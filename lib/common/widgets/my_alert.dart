@@ -101,48 +101,48 @@ class _MyAlertState extends State<MyAlert> with TickerProviderStateMixin {
   }) {
     if (child == null) return;
 
-    final snackAnimationController = AnimationController(
+    final animationController = AnimationController(
       duration: const Duration(milliseconds: 3000),
       vsync: this,
     );
 
     final opacityAnimation = TweenSequence([
       TweenSequenceItem(tween: Tween(begin: 0.0, end: 1.0).chain(CurveTween(curve: Curves.easeOut)), weight: 1),
-      TweenSequenceItem(tween: ConstantTween(1.0), weight: 4),
+      TweenSequenceItem(tween: ConstantTween(1.0), weight: 8),
       TweenSequenceItem(tween: Tween(begin: 1.0, end: 0.0).chain(CurveTween(curve: Curves.easeOut)), weight: 1),
-    ]).animate(snackAnimationController);
+    ]).animate(animationController);
 
     final positionAnimation = TweenSequence([
       TweenSequenceItem(tween: Tween(begin: beginPosition, end: stayPosition).chain(CurveTween(curve: Curves.easeOut)), weight: 1),
-      TweenSequenceItem(tween: ConstantTween(stayPosition), weight: 4),
+      TweenSequenceItem(tween: ConstantTween(stayPosition), weight: 8),
       TweenSequenceItem(tween: Tween(begin: stayPosition, end: endPosition).chain(CurveTween(curve: Curves.easeOut)), weight: 1),
-    ]).animate(snackAnimationController);
+    ]).animate(animationController);
 
     // 启动动画
-    snackAnimationController.forward();
+    animationController.forward();
 
     // 添加动画状态监听器，动画完成后移除 Snackbar
-    snackAnimationController.addStatusListener((status) {
+    animationController.addStatusListener((status) {
       if (status == AnimationStatus.completed) {
         // 动画完成后移除对应的 Snackbar 和动画控制器
         setState(() {
           list.removeAt(0);
           _animationControllers.removeAt(0);
         });
-        snackAnimationController.dispose();
+        animationController.dispose();
       }
     });
 
     setState(() {
       list.add(
         _SnackBarWidget(
-          snackAnimationController: snackAnimationController,
+          snackAnimationController: animationController,
           opacityAnimation: opacityAnimation,
           positionAnimation: positionAnimation,
           child: child,
         ),
       );
-      _animationControllers.add(snackAnimationController);
+      _animationControllers.add(animationController);
     });
   }
 
