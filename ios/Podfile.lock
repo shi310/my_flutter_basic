@@ -55,10 +55,6 @@ PODS:
     - Flutter
   - my_gallery (0.0.1):
     - Flutter
-  - my_utils (0.0.1):
-    - Flutter
-  - my_widgets (0.0.1):
-    - Flutter
   - nanopb (3.30910.0):
     - nanopb/decode (= 3.30910.0)
     - nanopb/encode (= 3.30910.0)
@@ -92,8 +88,6 @@ DEPENDENCIES:
   - my_deep_link (from `.symlinks/plugins/my_deep_link/ios`)
   - my_device_info (from `.symlinks/plugins/my_device_info/ios`)
   - my_gallery (from `.symlinks/plugins/my_gallery/ios`)
-  - my_utils (from `.symlinks/plugins/my_utils/ios`)
-  - my_widgets (from `.symlinks/plugins/my_widgets/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
@@ -133,10 +127,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/my_device_info/ios"
   my_gallery:
     :path: ".symlinks/plugins/my_gallery/ios"
-  my_utils:
-    :path: ".symlinks/plugins/my_utils/ios"
-  my_widgets:
-    :path: ".symlinks/plugins/my_widgets/ios"
   package_info_plus:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_foundation:
@@ -170,8 +160,6 @@ SPEC CHECKSUMS:
   my_deep_link: 27c429b57c14c6a625ae1511095c3a3fe540a667
   my_device_info: f26fb74144d1615a7aee3ac64c8fd4098ebba1e6
   my_gallery: a571faed28f4989420bc05efc7b1aaf3bc44325d
-  my_utils: f4abd8ca05326c579bb052fad3e2222e13c359a4
-  my_widgets: 6ee6334506456bbd215862baab698d01bf32e512
   nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   package_info_plus: af8e2ca6888548050f16fa2f1938db7b5a5df499
   path_provider_foundation: 080d55be775b7414fd5a5ef3ac137b97b097e564
@@ -180,7 +168,7 @@ SPEC CHECKSUMS:
   restart_app: 9cda5378aacc5000e3f66ee76a9201534e7d3ecf
   sqflite_darwin: 20b2a3a3b70e43edae938624ce550a3cbf66a3d0
   video_player_avfoundation: 2cef49524dd1f16c5300b9cd6efd9611ce03639b
-  wakelock_plus: fd58c82b1388f4afe3fe8aa2c856503a262a5b03
+  wakelock_plus: 04623e3f525556020ebd4034310f20fe7fda8b49
 
 PODFILE CHECKSUM: 546905b42b12033c68f53fb8e898c145d3fa069c
 

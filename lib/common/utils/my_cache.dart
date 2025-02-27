@@ -18,7 +18,7 @@ class MyCache {
 
   static Future<File?> getSingleFile(String url) => _instance._getSingleFile(url);
   static Future<File?> getFile(String url) => _instance._getFile(url);
-  static Future<void> putFile(String key, String data, {Duration maxAge = _timeCache}) => _instance._putFile(key, data, maxAge: maxAge);
+  static Future<void> putFile(String key, String data, {Duration time = _timeCache}) => _instance._putFile(key, data, maxAge: time);
   static Future<void> removeFile(String url) => _instance._removeFile(url);
   static Future<void> clear() => _instance._clear();
 

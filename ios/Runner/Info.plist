@@ -2,54 +2,95 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+    <!-- 禁用 Flutter 默认的深度链接处理器 -->
+    <key>FlutterDeepLinkingEnabled</key>
+    <string>NO</string>
+
+    <!-- 相机权限描述 -->
     <key>NSCameraUsageDescription</key>
     <string>$(NSCameraUsageDescription)</string>
 
+    <!-- 麦克风权限描述 -->
     <key>NSMicrophoneUsageDescription</key>
     <string>$(NSMicrophoneUsageDescription)</string>
 
+    <!-- 允许应用添加照片到相册的权限描述 -->
     <key>NSPhotoLibraryAddUsageDescription</key>
     <string>$(NSPhotoLibraryAddUsageDescription)</string>
 
+    <!-- 访问相册的权限描述 -->
     <key>NSPhotoLibraryUsageDescription</key>
     <string>$(NSPhotoLibraryUsageDescription)</string>
 
+    <!-- 允许更高的帧率，减少最低帧时间限制 -->
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+
+    <!-- 设定开发区域 -->
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
+
+    <!-- App 显示名称 -->
 	<key>CFBundleDisplayName</key>
 	<string>我的框架</string>
+
+    <!-- 可执行文件名称 -->
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
+
+    <!-- 应用唯一标识符 -->
 	<key>CFBundleIdentifier</key>
 	<string>$(PRODUCT_BUNDLE_IDENTIFIER)</string>
+
+    <!-- Info.plist 版本 -->
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
+
+    <!-- App 名称 -->
 	<key>CFBundleName</key>
 	<string>my_flutter_basic</string>
+
+    <!-- 应用包类型 -->
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
+
+    <!-- App 短版本号（用户可见版本） -->
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>
+
+    <!-- 应用签名（iOS 需要但可以是默认值） -->
 	<key>CFBundleSignature</key>
 	<string>????</string>
+
+    <!-- App 内部版本号 -->
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
+
+    <!-- 该应用仅支持 iOS 设备 -->
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+
+    <!-- 允许 App 处理间接输入事件 -->
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+
+    <!-- 启动界面 storyboard 文件 -->
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
+
+    <!-- 主 storyboard 文件 -->
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+
+    <!-- 允许的屏幕方向（iPhone） -->
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+
+    <!-- 允许的屏幕方向（iPad） -->
 	<key>UISupportedInterfaceOrientations~ipad</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
@@ -58,6 +99,7 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 
+    <!-- App URL Schemes（用于深度链接等） -->
 	<key>CFBundleURLTypes</key>
     <array>
         <dict>

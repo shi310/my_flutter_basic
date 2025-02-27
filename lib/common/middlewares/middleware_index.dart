@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:my_flutter_basic/common/common.dart';
 
 
 
@@ -15,6 +16,6 @@ class MiddlewareIndex extends GetMiddleware {
     // }
     // return const RouteSettings(name: MyRoutes.loginView);
 
-    return null;
+    return const RouteSettings(name: MyRoutes.loginView);
   }
 }

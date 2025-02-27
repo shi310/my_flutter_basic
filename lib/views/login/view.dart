@@ -147,6 +147,19 @@ class LoginView extends GetView<LoginController> {
           child: Text('识别二维码'),
         ),
 
+        ElevatedButton(
+          onPressed: () {
+            showMySnack(child: Text('顶部弹窗的文案在这里', style: TextStyle(color: Colors.white)));
+          },
+          child: Text('顶部提示'),
+        ),
+
+        ElevatedButton(
+          onPressed: () {
+            showMyToast(child: Text('中部弹窗的文案在这里', style: TextStyle(color: Colors.white)));
+          },
+          child: Text('中部提示'),
+        ),
 
       ],
     );

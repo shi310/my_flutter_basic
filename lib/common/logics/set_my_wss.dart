@@ -29,8 +29,7 @@ void _onMaxRetryOut() {
 }
 
 void _onMessageReceived(dynamic message) {
-  // Handle the received message here
-  // You can use the `message` parameter to parse the JSON data and perform your desired actions
+
 }
 
 Future<bool> _isCanConnect() async {
@@ -39,7 +38,7 @@ Future<bool> _isCanConnect() async {
 
 Map<String, dynamic> _headers() {
   return {
-    'x-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVVUlEIjoiMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwIiwiSUQiOjE4MSwiVXNlcm5hbWUiOiJmdWd1aTAwNyIsIlBob25lIjoiMTU4MDUwNjAwMDciLCJBdXRob3JpdHlJZCI6MCwiQWNjb3VudFR5cGUiOjEsIklzQXV0aCI6MSwiQnVmZmVyVGltZSI6ODY0MDAsImlzcyI6InFtUGx1cyIsImF1ZCI6WyJHVkEiXSwiZXhwIjoxNzM2NzUxNzIyLCJuYmYiOjE3MzYxNDY5MjJ9.dk9fbeey1lXW9A55E7AiHOik5fqdROybA1sRhgvDSYk',
+    'x-token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVVUlEIjoiMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwIiwiSUQiOjQwLCJVc2VybmFtZSI6ImZ1Z3VpMDAzIiwiUGhvbmUiOiIxNTgwNTA2MDAwMyIsIkF1dGhvcml0eUlkIjowLCJBY2NvdW50VHlwZSI6MSwiSXNBdXRoIjozLCJCdWZmZXJUaW1lIjo4NjQwMCwiaXNzIjoicW1QbHVzIiwiYXVkIjpbIkdWQSJdLCJleHAiOjE3NDExNjk0NjIsIm5iZiI6MTc0MDU2NDY2Mn0.u46-KgZ2qX36TyprMNHjxMVE8B4rsQAdArERQDuo47c',
   };
 }
 

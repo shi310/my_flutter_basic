@@ -21,6 +21,9 @@ class UserController extends GetxService with WidgetsBindingObserver {
 
   String userToken = '';
 
+  // 切换到后台断开wss的时长
+  Timer? _disconnectTimer;
+
   @override
   void onInit() async {
     super.onInit();
@@ -30,16 +33,27 @@ class UserController extends GetxService with WidgetsBindingObserver {
   }
 
   @override
+  void onReady() {
+    startCheckingForHotUpdates();
+    super.onReady();
+  }
+
+  @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
     // 监视 App 是否切换到后台
     switch (state) {
       case AppLifecycleState.resumed:
         MyLogger.w('app 切换到了前台');
+        _disconnectTimer?.cancel();
+        _disconnectTimer = null;
         UserController.to.myWss?.connect();
         break;
       case AppLifecycleState.paused:
         MyLogger.w('app 切换到了后台');
-        UserController.to.myWss?.close();
+        _disconnectTimer = Timer(Duration(minutes: 1), () {
+          MyLogger.w('1 分钟未回到前台，断开 WebSocket');
+          UserController.to.myWss?.close();
+        });
         break;
       default:
         break;

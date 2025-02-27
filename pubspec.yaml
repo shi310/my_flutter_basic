@@ -30,7 +30,7 @@ dependencies:
     path: ./plugins/my_gallery
 
   # GetX
-  get: ^5.0.0-release-candidate-9.2.1
+  get: ^4.7.2
 
   # svg
   flutter_svg: ^2.0.10+1

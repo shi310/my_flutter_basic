@@ -5,7 +5,17 @@ import 'package:get/get.dart';
 Future<void> initialized() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // 增加系统主题和系统语言监听器
+  await Future.wait([
+    // 初始化主题
+    initTheme(),
+    // 初始化语言
+    initLang(),
+    // 初始化深度链接
+    initDeepLink(),
+    // 导入用户控制器
+    Get.put(UserController()).initComplete,
+  ]);
+
   // 监听系统主题变化
   SystemThemeObserver.init(isCanChange: () async {
     final themeModeCache = await MyCache.getFile('themeMode');
@@ -18,21 +28,6 @@ Future<void> initialized() async {
     final langMode = await localeCache?.readAsString();
     return langMode == null ? null : MyLangMode.fromString(langMode);
   });
-
-  // 应用初始化
-  WidgetsBinding.instance.addPostFrameCallback((duration) {
-    MyLogger.w('初始化时长 -> $duration');
-    // 初始化主题
-    initTheme();
-    // 初始化语言
-    initLang();
-    // 初始化深度链接
-    initDeepLink();
-    startCheckingForHotUpdates();
-  });
-
-  // 导入用户控制器
-  await Get.put(UserController()).initComplete;
 }
 
 

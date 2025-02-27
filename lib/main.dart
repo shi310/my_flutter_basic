@@ -14,18 +14,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      // 关闭debug角标
-      // debugShowCheckedModeBanner: false,
-
       // title
       title: 'King Game',
 
-      // 日志
-      // enableLog: true,
-      // logWriterCallback: MyLogger.write,
-
       // 默认页面切换动画
+      // 从右到左滑动
       defaultTransition: Transition.rightToLeftWithFade,
+      // 动画市场 300 毫秒
       transitionDuration: const Duration(milliseconds: 300),
 
       // 路由
@@ -38,9 +33,12 @@ class MyApp extends StatelessWidget {
       initialRoute: MyRoutes.indexView,
 
       // APP字典，多语言切换
-      translations: MyLang(), //字典
-      locale: Get.deviceLocale, // 默认语言
-      fallbackLocale: MyLang.fallbackMode, // 备用语言
+      // 字典
+      translations: MyLang(),
+      // 默认语言
+      locale: Get.deviceLocale,
+      // 备用语言
+      fallbackLocale: MyLang.fallbackMode,
 
       // 系统字典，用来改变系统组件的语言
       localizationsDelegates: MyLang.localizationsDelegates,
@@ -49,9 +47,9 @@ class MyApp extends StatelessWidget {
       supportedLocales: MyLang.supportedLocales,
 
       // 主题
-      // theme: ConfigStore.to.isDarkMode ? AppTheme.dark : AppTheme.light,
+      theme: MyTheme().light,
+      darkTheme: MyTheme().dark,
       themeMode: ThemeMode.light,
-
 
       // 顶层弹窗
       builder: (context, child) => MyAlert(key: MyAlert.globalKey, child: child),

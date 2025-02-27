@@ -19,7 +19,7 @@ Future<void> showMyDialog({
   final cancelButton = ElevatedButton(
     child: Text(cancelText ?? '取消'),
     onPressed: () {
-      Get.backLegacy();
+      Get.back();
       onCancel?.call();
     },
   );
@@ -27,7 +27,7 @@ Future<void> showMyDialog({
   final confirmButton = ElevatedButton(
     child: Text(confirmText ?? '确认'),
     onPressed: () async {
-      Get.backLegacy(result: 'Dialog Result');
+      Get.back(result: 'Dialog Result');
       onConfirm?.call();
     },
   );

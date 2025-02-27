@@ -31,6 +31,10 @@ class MyAlert extends StatefulWidget {
     globalKey.currentState?.showSnack(child: child);
   }
 
+  static void showToast({Widget? child}) {
+    globalKey.currentState?.showToast(child: child);
+  }
+
   @override
   State<MyAlert> createState() => _MyAlertState();
 }
@@ -40,6 +44,8 @@ class _MyAlertState extends State<MyAlert> with TickerProviderStateMixin {
   bool _isShowBlock = false;
 
   final List<Widget> _snacks = [];
+  final List<Widget> _toasts = [];
+
   final List<AnimationController> _animationControllers = [];
 
   void showLoading() {
@@ -67,6 +73,32 @@ class _MyAlertState extends State<MyAlert> with TickerProviderStateMixin {
   }
 
   void showSnack({Widget? child}) {
+    return _showToast(
+      list: _snacks,
+      beginPosition: 0.0,
+      stayPosition: kToolbarHeight,
+      endPosition: 0.0,
+      child: child,
+    );
+  }
+
+  void showToast({Widget? child}) {
+    return _showToast(
+      list: _toasts,
+      beginPosition: 0.0,
+      stayPosition: 0.0,
+      endPosition: 0.0 - kToolbarHeight,
+      child: child,
+    );
+  }
+
+  void _showToast({
+    required List<Widget> list,
+    required double beginPosition,
+    required double stayPosition,
+    required double endPosition,
+    Widget? child,
+  }) {
     if (child == null) return;
 
     final snackAnimationController = AnimationController(
@@ -81,9 +113,9 @@ class _MyAlertState extends State<MyAlert> with TickerProviderStateMixin {
     ]).animate(snackAnimationController);
 
     final positionAnimation = TweenSequence([
-      TweenSequenceItem(tween: Tween(begin: 0.0, end: kToolbarHeight).chain(CurveTween(curve: Curves.easeOut)), weight: 1),
-      TweenSequenceItem(tween: ConstantTween(kToolbarHeight), weight: 4),
-      TweenSequenceItem(tween: Tween(begin: kToolbarHeight, end: 0.0).chain(CurveTween(curve: Curves.easeOut)), weight: 1),
+      TweenSequenceItem(tween: Tween(begin: beginPosition, end: stayPosition).chain(CurveTween(curve: Curves.easeOut)), weight: 1),
+      TweenSequenceItem(tween: ConstantTween(stayPosition), weight: 4),
+      TweenSequenceItem(tween: Tween(begin: stayPosition, end: endPosition).chain(CurveTween(curve: Curves.easeOut)), weight: 1),
     ]).animate(snackAnimationController);
 
     // 启动动画
@@ -94,7 +126,7 @@ class _MyAlertState extends State<MyAlert> with TickerProviderStateMixin {
       if (status == AnimationStatus.completed) {
         // 动画完成后移除对应的 Snackbar 和动画控制器
         setState(() {
-          _snacks.removeAt(0);
+          list.removeAt(0);
           _animationControllers.removeAt(0);
         });
         snackAnimationController.dispose();
@@ -102,7 +134,7 @@ class _MyAlertState extends State<MyAlert> with TickerProviderStateMixin {
     });
 
     setState(() {
-      _snacks.add(
+      list.add(
         _SnackBarWidget(
           snackAnimationController: snackAnimationController,
           opacityAnimation: opacityAnimation,
@@ -150,6 +182,7 @@ class _MyAlertState extends State<MyAlert> with TickerProviderStateMixin {
         loading,
         block,
         ..._snacks,
+        ..._toasts.map((item) => Center(child: item))
       ],
     );
   }
