@@ -8,8 +8,8 @@ class UserController extends GetxService with WidgetsBindingObserver {
   static UserController get to => Get.find();
 
   // 初始化等待方法
-  final Completer<void> _initCompleter = Completer<void>();
-  Future<void> get initComplete => _initCompleter.future;
+  // final Completer<void> _initCompleter = Completer<void>();
+  // Future<void> get initComplete => _initCompleter.future;
 
   // dio 请求
   MyDio? myDio;
@@ -31,14 +31,6 @@ class UserController extends GetxService with WidgetsBindingObserver {
 
   // 切换到后台断开wss的时长
   Timer? _disconnectTimer;
-
-  @override
-  void onInit() async {
-    super.onInit();
-    WidgetsBinding.instance.addObserver(this);
-    _initCompleter.complete();
-    MyLogger.w('UserController 初始化完毕...');
-  }
 
   @override
   void onReady() {

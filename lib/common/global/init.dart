@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 
 Future<void> initialized() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // 导入用户控制器
+  Get.put(UserController());
 
   await Future.wait([
     // 初始化主题
@@ -12,8 +14,6 @@ Future<void> initialized() async {
     initLang(),
     // 初始化深度链接
     initDeepLink(),
-    // 导入用户控制器
-    Get.put(UserController()).initComplete,
   ]);
 
   // 监听系统主题变化

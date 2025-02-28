@@ -60,13 +60,7 @@ class LoginView extends GetView<LoginController> {
         ),
 
         ElevatedButton(onPressed: getEnvironment, child: Text('获取配置')),
-
-        ElevatedButton(
-          onPressed: () async {
-            setMyDio();
-          },
-          child: Text('配置dio'),
-        ),
+        ElevatedButton(onPressed: setMyDio, child: Text('配置dio')),
 
         ElevatedButton(
           onPressed: () async {
