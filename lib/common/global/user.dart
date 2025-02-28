@@ -11,14 +11,22 @@ class UserController extends GetxService with WidgetsBindingObserver {
   final Completer<void> _initCompleter = Completer<void>();
   Future<void> get initComplete => _initCompleter.future;
 
+  // dio 请求
   MyDio? myDio;
 
+  // wss 通信
   MyWss? myWss;
 
+  // 是否允许连接 wss
+  bool isWssCanConnection = true;
+
+  // baseUrls 数组
   List<String> baseUrlList = [];
 
+  // wssUrls 数组
   List<String> wssUrlList = [];
 
+  // 用户 token
   String userToken = '';
 
   // 切换到后台断开wss的时长
@@ -46,7 +54,9 @@ class UserController extends GetxService with WidgetsBindingObserver {
         MyLogger.w('app 切换到了前台');
         _disconnectTimer?.cancel();
         _disconnectTimer = null;
-        UserController.to.myWss?.connect();
+        if (isWssCanConnection) {
+          UserController.to.myWss?.connect();
+        }
         break;
       case AppLifecycleState.paused:
         MyLogger.w('app 切换到了后台');

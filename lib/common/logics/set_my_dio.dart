@@ -1,7 +1,33 @@
 import 'package:my_flutter_basic/common/common.dart';
 import 'package:my_device_info/my_device_info.dart';
 
-Future<void> setMyDio({
+Future<void> setMyDio() async {
+  showMyLoading();
+  await getBaseUrl(
+    urls: UserController.to.baseUrlList,
+    onSuccess: (baseUrl) async {
+      await _setMyDio(baseUrl: baseUrl);
+      showMyDialog(
+        title: '配置成功',
+        content: 'baseUrl：$baseUrl',
+        onConfirm: () {},
+        onCancel: () {},
+      );
+    },
+    onError: () {
+      showMyDialog(
+        title: '与服务器连接失败',
+        content: '请稍后在重试',
+        confirmText: '重试',
+        onConfirm: () => setMyDio(),
+        onCancel: () {},
+      );
+    }
+  );
+  hideMyLoading();
+}
+
+Future<void> _setMyDio({
   required String baseUrl,
 }) async {
   final info = await MyDeviceInfo.getDeviceInfo();
@@ -31,3 +57,4 @@ Future<void> setMyDio({
     dioCode: 0,
   );
 }
+

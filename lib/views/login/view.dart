@@ -63,23 +63,7 @@ class LoginView extends GetView<LoginController> {
 
         ElevatedButton(
           onPressed: () async {
-            showMyLoading();
-            await getBaseUrl(
-                urls: UserController.to.baseUrlList,
-                onSuccess: (baseUrl) async {
-                  await setMyDio(baseUrl: baseUrl);
-                  showMyDialog(
-                    title: '配置成功',
-                    content: 'baseUrl：$baseUrl',
-                    onConfirm: () {},
-                    onCancel: () {},
-                  );
-                },
-                onError: () {
-                  // print('获取baseUrl失败');
-                }
-            );
-            hideMyLoading();
+            setMyDio();
           },
           child: Text('配置dio'),
         ),

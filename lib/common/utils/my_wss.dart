@@ -35,9 +35,6 @@ class MyWss {
   // 心跳定时器 和 发送心跳的时间
   Timer? _heartbeatTimer;
 
-  // 延迟重连的定时器
-  Timer? _retryTimer;
-
   // 连接状态
   // 是否主动断开用户主动断开连接
   // 如果是主动断开的，就不重连了
@@ -56,7 +53,6 @@ class MyWss {
 
   // ws 重置到初始化状态
   Future<void> connect() async {
-    await close();
     _retryAttempts = 0;
     await _retryConnection();
   }
@@ -71,17 +67,17 @@ class MyWss {
   /// WebSocket 连接方法
   Future<void> _connectWebSocket() async {
     if (_isConnected) {
-      log("⚠️ wss: ${urls[_index]} 已经连接... ⚠️");
+      log("⚠️ wss: ${urls[_index]} 已经连接...");
       return;
     }
 
     if (_isConnecting) {
-      log("⚠️ wss: ${urls[_index]} 正在连接... ⚠️");
+      log("⚠️ wss: ${urls[_index]} 正在连接...️");
       return;
     }
 
     if (urls.isEmpty || urls[_index].isEmpty) {
-      log("⚠️ wss 链接为空，无法链接... ⚠️");
+      log("⚠️ wss 链接为空，无法链接...");
       return;
     }
 
@@ -116,7 +112,6 @@ class MyWss {
       _isConnecting = false;
       _retryAttempts = 0;
       _urlCount = 0;
-      _cancelTimer(_retryTimer); // 取消可能的重连定时器
       _sendHeartBeat();
 
       log('✅ WebSocket 连接成功: ${urls[_index]}');
@@ -141,6 +136,8 @@ class MyWss {
   /// WebSocket 连接关闭时处理
   void _onConnectionDone() {
     log('❌❌❌❌❌ WebSocket: ${urls[_index]} 已经关闭 -- ${DateTime.now()}');
+    _isConnected = false;
+    _cancelTimer(_heartbeatTimer);
     if (!_isClosedByUser) connect();
   }
 
@@ -148,6 +145,8 @@ class MyWss {
   void _onConnectionError(error) {
     log('❌❌❌❌❌ WebSocket: ${urls[_index]} 连接错误 -- ${DateTime.now()}');
     log(error.toString());
+    _isConnected = false;
+    _cancelTimer(_heartbeatTimer);
     connect();
   }
 
@@ -155,7 +154,6 @@ class MyWss {
   Future<void> _retryConnection() async {
     if (_retryAttempts >= maxRetryCount) {
       log('🛑 ${urls[_index]} 达到最大重连次数');
-      _cancelTimer(_retryTimer);
 
       if (_urlCount == urls.length - 1) {
         onMaxRetryOut?.call();
@@ -170,7 +168,6 @@ class MyWss {
 
     _retryAttempts++;
 
-    // _cancelTimer(_retryTimer);
     if (await isCanConnect()) {
       await _connectWebSocket();
     } else {
@@ -203,7 +200,6 @@ class MyWss {
     _isClosedByUser = true;
     _isConnected = false;
     _isConnecting = false;
-    _cancelTimer(_retryTimer);
     _cancelTimer(_heartbeatTimer);
 
     try {
@@ -228,7 +224,7 @@ class MyWss {
         _retryConnection();
       }
     } else {
-      log('>>>>> �� WebSocket 未连接，无法发送消息');
+      log('>>>>> ❌ WebSocket 未连接，无法发送消息');
       _retryConnection();
     }
   }

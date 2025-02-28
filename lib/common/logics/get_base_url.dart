@@ -8,6 +8,11 @@ Future<void> getBaseUrl({
   void Function(String)? onSuccess,
   void Function()? onError,
 }) async {
+  if (urls.isEmpty) {
+    MyLogger.w('传入的链接组为空，无法操作...');
+    onError?.call();
+    return;
+  }
 
   final client = HttpClient();
   final completer = Completer<String>();

@@ -6,7 +6,6 @@ list(APPEND FLUTTER_PLUGIN_LIST
   app_links
   audioplayers_windows
   file_selector_windows
-  my_deep_link
   my_device_info
   my_gallery
   permission_handler_windows

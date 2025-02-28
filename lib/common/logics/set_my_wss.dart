@@ -17,8 +17,9 @@ void setMyWss() {
   );
 }
 
-void _onMaxRetryOut() {
-  showMyDialog(
+void _onMaxRetryOut() async {
+  UserController.to.isWssCanConnection = false;
+  await showMyDialog(
     title: '连接超时',
     content: '请检查您的网络连接并重试',
     confirmText: '重试',
@@ -26,6 +27,7 @@ void _onMaxRetryOut() {
       UserController.to.myWss?.reset();
     }
   );
+  UserController.to.isWssCanConnection = true;
 }
 
 void _onMessageReceived(dynamic message) {

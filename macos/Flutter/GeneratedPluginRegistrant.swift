@@ -10,7 +10,6 @@ import audioplayers_darwin
 import device_info_plus
 import file_selector_macos
 import mobile_scanner
-import my_deep_link
 import my_device_info
 import my_gallery
 import package_info_plus
@@ -25,7 +24,6 @@ func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   DeviceInfoPlusMacosPlugin.register(with: registry.registrar(forPlugin: "DeviceInfoPlusMacosPlugin"))
   FileSelectorPlugin.register(with: registry.registrar(forPlugin: "FileSelectorPlugin"))
   MobileScannerPlugin.register(with: registry.registrar(forPlugin: "MobileScannerPlugin"))
-  MyDeepLinkPlugin.register(with: registry.registrar(forPlugin: "MyDeepLinkPlugin"))
   MyDeviceInfoPlugin.register(with: registry.registrar(forPlugin: "MyDeviceInfoPlugin"))
   MyGalleryPlugin.register(with: registry.registrar(forPlugin: "MyGalleryPlugin"))
   FPPPackageInfoPlusPlugin.register(with: registry.registrar(forPlugin: "FPPPackageInfoPlusPlugin"))

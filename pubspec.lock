@@ -589,13 +589,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.2"
-  my_deep_link:
-    dependency: "direct main"
-    description:
-      path: "plugins/my_deep_link"
-      relative: true
-    source: path
-    version: "0.0.1"
   my_device_info:
     dependency: "direct main"
     description:
