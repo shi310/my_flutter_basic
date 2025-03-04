@@ -183,7 +183,7 @@ class MyDio {
           receiveTimeout: receiveTimeout,
         ),
         onSendProgress: onSendProgress,
-      );
+      ).timeout(const Duration(days: 1));
       final responseModel = ResponseModel.fromJson(response.data);
 
       if (responseModel.code == myDioCode) {

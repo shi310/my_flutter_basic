@@ -2,9 +2,9 @@ part of 'config.dart';
 
 class _Time {
   // 获取配置超时
-  final Duration outCheck = const Duration(seconds: 10);
+  final Duration out = const Duration(seconds: 10);
   // 接口请求超时
-  final Duration outDefault = const Duration(minutes: 60);
+  final Duration outUpload = const Duration(minutes: 60);
   // 数据刷新的等待时间
   final Duration wait = const Duration(seconds: 2);
   // 心跳间隔

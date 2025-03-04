@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 import 'package:my_flutter_basic/common/common.dart';
+import 'package:my_flutter_basic/views/games/tetris/binding.dart';
+import 'package:my_flutter_basic/views/games/tetris/view.dart';
 import 'package:my_flutter_basic/views/views.dart';
 
 class MyPages {
@@ -26,6 +28,13 @@ class MyPages {
       name: MyRoutes.loginView,
       page: () => const LoginView(),
       binding: LoginBinding(),
+    ),
+
+    // 俄罗斯方块
+    GetPage(
+      name: MyRoutes.tetrisView,
+      page: () => const TetrisView(),
+      binding: TetrisBinding(),
     ),
   ];
 }

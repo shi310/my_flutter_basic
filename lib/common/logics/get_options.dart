@@ -22,7 +22,7 @@ Future<void> getOptions({
     tasks.add(Future(() async {
       try {
         final uri = Uri.parse(url);
-        final request = await client.getUrl(uri).timeout(MyConfig.time.outCheck);
+        final request = await client.getUrl(uri).timeout(MyConfig.time.out);
         final response = await request.close();
 
         if (response.statusCode >= 200 && response.statusCode < 300) {
@@ -42,7 +42,7 @@ Future<void> getOptions({
   String data = '';
 
   try {
-    data = await completer.future.timeout(MyConfig.time.outCheck);
+    data = await completer.future.timeout(MyConfig.time.out);
   } catch (e) {
     MyLogger.w('获取配置超时或发生其他错误 --> $e');
   }

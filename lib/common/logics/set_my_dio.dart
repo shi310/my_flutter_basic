@@ -35,9 +35,9 @@ Future<void> _setMyDio({
   UserController.to.myDio = MyDio(
     baseOptions: (option) => option.copyWith(
       baseUrl: baseUrl,
-      connectTimeout: MyConfig.time.outDefault,
-      receiveTimeout: MyConfig.time.outDefault,
-      sendTimeout: MyConfig.time.outDefault,
+      connectTimeout: MyConfig.time.out,
+      receiveTimeout: MyConfig.time.out,
+      sendTimeout: MyConfig.time.out,
     ),
     headers: {
       'x-token': UserController.to.userToken,
