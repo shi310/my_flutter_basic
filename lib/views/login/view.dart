@@ -144,6 +144,11 @@ class LoginView extends GetView<LoginController> {
           child: Text('俄罗斯方块'),
         ),
 
+        ElevatedButton(
+          onPressed: () => Get.toNamed(MyRoutes.tetrisView),
+          child: Text('path+1'),
+        ),
+
       ],
     );
 

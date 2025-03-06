@@ -6,7 +6,7 @@ import 'package:shorebird_code_push/shorebird_code_push.dart';
 
 void startCheckingForHotUpdates() {
   stopCheckingForHotUpdates();
-  UserController.to.timerHotUpdate = Timer.periodic(const Duration(minutes: 1), (timer) async {
+  UserController.to.timerHotUpdate = Timer.periodic(const Duration(minutes: 2), (timer) async {
     final status = await UserController.to.shorebirdUpdater.checkForUpdate();
     if (status == UpdateStatus.outdated) {
       await UserController.to.shorebirdUpdater.update();
@@ -24,4 +24,5 @@ void startCheckingForHotUpdates() {
 
 void stopCheckingForHotUpdates() {
   UserController.to.timerHotUpdate?.cancel();
+  UserController.to.timerHotUpdate = null;
 }
