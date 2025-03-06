@@ -18,7 +18,6 @@ class TetrisView extends GetView<TetrisController> {
 
     // 方块的大小
     final size = (Get.width * 0.5 - 10 - 1 * 2 - 6 * 2 - 1 * 9) / 10;
-    print(size);
 
     // 默认的方块样式
     var defaultBox = Container(

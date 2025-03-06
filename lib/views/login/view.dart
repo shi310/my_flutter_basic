@@ -29,10 +29,10 @@ class LoginView extends GetView<LoginController> {
 
         ElevatedButton(
           onPressed: () async {
-            final info = await MyDeviceInfo.getDeviceInfo();
+            final info = UserController.to.deviceInfo;
             showMyDialog(
-              title: info.appName,
-              content: 'APP 版本: ${info.appVersion}, 其他信息：${info.brand}, ${info.id}, ${info.model}, ${info.systemVersion}',
+              title: info?.appName,
+              content: 'APP 版本: ${info?.appVersion}, 其他信息：${info?.brand}, ${info?.id}, ${info?.model}, ${info?.systemVersion}',
               confirmText: '关闭',
             );
           },

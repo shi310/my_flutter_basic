@@ -2,15 +2,12 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:my_device_info/models/my_device_info_model.dart';
 import 'package:my_flutter_basic/common/common.dart';
+import 'package:shorebird_code_push/shorebird_code_push.dart';
 
-class UserController extends GetxService with WidgetsBindingObserver {
+class UserController extends GetxController with WidgetsBindingObserver {
   static UserController get to => Get.find();
-
-  // 初始化等待方法
-  // final Completer<void> _initCompleter = Completer<void>();
-  // Future<void> get initComplete => _initCompleter.future;
-
   // dio 请求
   MyDio? myDio;
 
@@ -28,6 +25,15 @@ class UserController extends GetxService with WidgetsBindingObserver {
 
   // 用户 token
   String userToken = '';
+
+  // 热更新定时器
+  Timer? timerHotUpdate;
+
+  // 热更新
+  ShorebirdUpdater shorebirdUpdater = ShorebirdUpdater();
+
+  // 应用信息
+  MyDeviceInfoModel? deviceInfo;
 
   // 切换到后台断开wss的时长
   Timer? _disconnectTimer;

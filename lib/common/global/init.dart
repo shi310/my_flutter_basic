@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 
 Future<void> initialized() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   // 导入用户控制器
   Get.put(UserController());
 
@@ -14,6 +15,8 @@ Future<void> initialized() async {
     initLang(),
     // 初始化深度链接
     initDeepLink(),
+    // initDeviceInfo
+    initDeviceInfo(),
   ]);
 
   // 监听系统主题变化
