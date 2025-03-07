@@ -7,7 +7,7 @@ Future<void> initDeviceInfo() async {
   UserController.to.shorebirdUpdater.readCurrentPatch().then((currentPatch) {
     MyLogger.w('The current patch number is: ${currentPatch?.number}');
     if (currentPatch != null && currentPatch.number > 0) {
-      UserController.to.deviceInfo?.appVersion += '${currentPatch.number}';
+      UserController.to.deviceInfo?.appVersion += '+${currentPatch.number}';
     }
   });
 }

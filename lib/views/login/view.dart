@@ -145,8 +145,8 @@ class LoginView extends GetView<LoginController> {
         ),
 
         ElevatedButton(
-          onPressed: () => Get.toNamed(MyRoutes.tetrisView),
-          child: Text('path+1'),
+          onPressed: () {},
+          child: Text('path -> +2'),
         ),
 
       ],
