@@ -32,7 +32,7 @@ class CaptchaModel {
             }
           );
         } else {
-          MyAlert.showSnack(child: Text(e.type.toString(), style: TextStyle(color: Colors.white),));
+          MyAlert.showSnack(child: Text(e.type.toString(), style: TextStyle(color: Colors.white)));
         }
         hideMyLoading();
       },
