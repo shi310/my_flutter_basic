@@ -3,6 +3,7 @@ import 'package:my_device_info/my_device_info.dart';
 
 Future<void> setMyDio({
   Future<dynamic> Function()? onSuccess,
+  bool isShowMyDialog = true,
 }) async {
   if (UserController.to.baseUrlList.isEmpty) {
     MyLogger.w('传入的链接组为空，无法配置Dio...');
@@ -14,18 +15,20 @@ Future<void> setMyDio({
       await _setMyDio(baseUrl: baseUrl);
       await onSuccess?.call();
     },
-    onError: () {
-      showMyDialog(
-        title: '与服务器连接失败',
-        content: '请稍后在重试',
-        confirmText: '重试',
-        onConfirm: () async {
-          showMyLoading();
-          await setMyDio(onSuccess: onSuccess);
-          hideMyLoading();
-        },
-        onCancel: () {},
-      );
+    onError: () async {
+      if (isShowMyDialog) {
+        showMyDialog(
+          title: '与服务器连接失败',
+          content: '请稍后在重试',
+          confirmText: '重试',
+          onConfirm: () async {
+            showMyLoading();
+            await setMyDio(onSuccess: onSuccess);
+            hideMyLoading();
+          },
+          onCancel: () {},
+        );
+      }
     }
   );
 }
@@ -57,9 +60,9 @@ Future<void> _setMyDio({
         }
       }
     },
-    // onError: (error) async {
-    //   await setMyDio();
-    // },
+    onError: (err, handle) async {
+      return handle.reject(err);
+    },
     dioCode: 0,
   );
 }

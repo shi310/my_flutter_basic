@@ -5,8 +5,8 @@ import 'package:my_flutter_basic/common/common.dart';
 
 Future<void> getBaseUrl({
   required List<String> urls,
-  void Function(String)? onSuccess,
-  void Function()? onError,
+  Future<dynamic> Function(String)? onSuccess,
+  Future<dynamic> Function()? onError,
 }) async {
 
   final client = HttpClient();
@@ -46,9 +46,9 @@ Future<void> getBaseUrl({
 
   if (baseUrl.isNotEmpty) {
     MyLogger.w('$baseUrl 被选定为 baseUrl');
-    onSuccess?.call(baseUrl);
+    await onSuccess?.call(baseUrl);
   } else {
     MyLogger.w('baseUrl 配置未知错误');
-    onError?.call();
+    await onError?.call();
   }
 }

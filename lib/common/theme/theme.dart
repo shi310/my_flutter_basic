@@ -14,7 +14,7 @@ class MyTheme {
   factory MyTheme() => _instance;
   MyTheme._internal();
 
-  static Future<void> update({required MyThemeMode mode, void Function(MyThemeMode mode)? onSuccess}) => _instance._update(mode: mode, onSuccess: onSuccess);
+  static Future<void> update({required MyThemeMode mode, Future<dynamic> Function(MyThemeMode mode)? onSuccess}) => _instance._update(mode: mode, onSuccess: onSuccess);
   static Future<void> setSystemUIOverlayStyle(Brightness brightness) => _instance._setSystemUIOverlayStyle(brightness);
   static void setPreferredOrientations() => _instance._setPreferredOrientations();
   static void removeNavigationBar() => _instance._removeNavigationBar();
@@ -22,7 +22,7 @@ class MyTheme {
   /// - 改变主题
   Future<void> _update({
     required MyThemeMode mode,
-    void Function(MyThemeMode mode)? onSuccess,
+    Future<dynamic> Function(MyThemeMode mode)? onSuccess,
   }) async {
     switch (mode) {
       case MyThemeMode.dark:
@@ -41,7 +41,7 @@ class MyTheme {
         MyLogger.w('已更改主题 ->️ 🌗 System');
         break;
     }
-    onSuccess?.call(mode);
+    await onSuccess?.call(mode);
     MyLogger.w("系统主题模式 -> ${Get.isPlatformDarkMode ?"🌛Dark" : "☀️Light"}");
   }
 

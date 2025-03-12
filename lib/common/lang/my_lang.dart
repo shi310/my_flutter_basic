@@ -33,10 +33,10 @@ class MyLang extends Translations {
   /// 更改语言
   static Future<void> update({
     required MyLangMode mode,
-    void Function(MyLangMode mode)? onSuccess,
+    Future<dynamic> Function(MyLangMode mode)? onSuccess,
   }) async {
     await Get.updateLocale(mode.toLocale());
-    onSuccess?.call(mode);
+    await onSuccess?.call(mode);
 
     log('当前APP语言：${mode.toLocale()}');
     log('当前系统语言：${Get.deviceLocale}');

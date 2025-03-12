@@ -32,10 +32,9 @@ class MyDio {
         await onResponse?.call(response);
         return handler.next(response);
       },
-      onError: (DioException err, handler) async {
+      onError: (err, handle) async {
         _logError(err);
-        await onError?.call(err);
-        return handler.reject(err);
+        return onError?.call(err, handle);
       },
     ));
     myDioCode = dioCode;
@@ -44,7 +43,7 @@ class MyDio {
   final BaseOptions Function(BaseOptions options)? baseOptions;
   final Map<String, dynamic>? headers;
   final Future<void> Function(Response<dynamic> response)? onResponse;
-  final Future<void> Function(DioException error)? onError;
+  final Future<void> Function(DioException error, ErrorInterceptorHandler handler)? onError;
 
   final int dioCode;
 
@@ -104,11 +103,11 @@ class MyDio {
   }
 
   Future<void> get<T>(String path, {
-    Function(int, String, T)? onSuccess,
+    Future<dynamic> Function(int, String, T)? onSuccess,
     Map<String, dynamic>? data,
     CancelToken? cancelToken,
     void Function(int, int)? onReceiveProgress,
-    void Function(DioException)? onError,
+    Future<dynamic> Function(DioException)? onError,
     T Function(dynamic)? onModel,
   }) async {
     try {
@@ -121,7 +120,7 @@ class MyDio {
 
       if (responseModel.code == myDioCode) {
         final model = onModel != null ? onModel(responseModel.data) : responseModel.data as T;
-        onSuccess?.call(responseModel.code, responseModel.msg, model);
+        await onSuccess?.call(responseModel.code, responseModel.msg, model);
       } else {
         final err = DioException(
           requestOptions: response.requestOptions,
@@ -129,18 +128,18 @@ class MyDio {
           error: responseModel.msg,
           type: DioExceptionType.badResponse,
         );
-        onError?.call(err);
+        await onError?.call(err);
       }
     } on DioException catch (err) {
-      onError?.call(err);
+      await onError?.call(err);
     }
   }
 
   Future<void> post<T>(String path, {
-    Function(int, String, T)? onSuccess,
+    Future<dynamic> Function(int, String, T)? onSuccess,
     Map<String, dynamic>? data,
     CancelToken? cancelToken,
-    void Function(DioException)? onError,
+    Future<dynamic> Function(DioException)? onError,
     T Function(dynamic)? onModel,
   }) async {
     try {
@@ -152,7 +151,7 @@ class MyDio {
 
       if (responseModel.code == myDioCode) {
         final model = onModel != null ? onModel(responseModel.data) : responseModel.data as T;
-        onSuccess?.call(responseModel.code, responseModel.msg, model);
+        await onSuccess?.call(responseModel.code, responseModel.msg, model);
       } else {
         final err = DioException(
           requestOptions: response.requestOptions,
@@ -160,19 +159,19 @@ class MyDio {
           error: responseModel.msg,
           type: DioExceptionType.badResponse,
         );
-        onError?.call(err);
+        await onError?.call(err);
       }
     } on DioException catch (err) {
-      onError?.call(err);
+      await onError?.call(err);
     }
   }
 
   Future<void> upload<T>(String path, {
-    Function(int, String, T)? onSuccess,
+    Future<dynamic> Function(int, String, T)? onSuccess,
     Map<String, dynamic>? data,
     CancelToken? cancelToken,
     void Function(int, int)? onSendProgress,
-    void Function(DioException)? onError,
+    Future<dynamic> Function(DioException)? onError,
     T Function(dynamic)? onModel,
     Duration? sendTimeout,
     Duration? receiveTimeout,
@@ -192,7 +191,7 @@ class MyDio {
 
       if (responseModel.code == myDioCode) {
         final model = onModel != null ? onModel(responseModel.data) : responseModel.data as T;
-        onSuccess?.call(responseModel.code, responseModel.msg, model);
+        await onSuccess?.call(responseModel.code, responseModel.msg, model);
       } else {
         final err = DioException(
           requestOptions: response.requestOptions,
@@ -200,10 +199,10 @@ class MyDio {
           error: responseModel.msg,
           type: DioExceptionType.badResponse,
         );
-        onError?.call(err);
+        await onError?.call(err);
       }
     } on DioException catch (err) {
-      onError?.call(err);
+      await onError?.call(err);
     }
   }
 }

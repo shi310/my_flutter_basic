@@ -5,13 +5,12 @@ import 'package:my_flutter_basic/common/common.dart';
 
 Future<void> getOptions({
   required List<String> urls,
-  void Function()? onSuccess,
-  void Function()? onError,
+  Future<dynamic> Function()? onSuccess,
+  Future<dynamic> Function()? onError,
 }) async {
   if (UserController.to.wssUrlList.isNotEmpty && UserController.to.baseUrlList.isNotEmpty) {
     MyLogger.w('配置已获取请勿重复操作...');
-    onSuccess?.call();
-    return;
+    await onSuccess?.call();
   }
 
   final client = HttpClient();
@@ -72,15 +71,15 @@ Future<void> getOptions({
     MyLogger.w('获取到 WSS 地址 --> ${UserController.to.wssUrlList}');
     MyLogger.l();
 
-    onSuccess?.call();
+    await onSuccess?.call();
   } else {
     showMyDialog(
       title: '连接失败',
       content: '请点击重新按钮重新尝试',
       onCancel: () {},
       onConfirm: () async {
-        onError?.call();
         showMyLoading();
+        await onError?.call();
         await getOptions(urls: urls, onError: onError, onSuccess: onSuccess);
         hideMyLoading();
       },

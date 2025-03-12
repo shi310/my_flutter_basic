@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:my_flutter_basic/common/common.dart';
 
 class CaptchaModel {
@@ -23,11 +25,15 @@ class CaptchaModel {
       },
       onError: (e) async {
         showMyLoading();
-        await setMyDio(
-          onSuccess: () async {
-            await update();
-          }
-        );
+        if (isResolve(e)) {
+          await setMyDio(
+            onSuccess: () async {
+              await update();
+            }
+          );
+        } else {
+          MyAlert.showSnack(child: Text(e.type.toString(), style: TextStyle(color: Colors.white),));
+        }
         hideMyLoading();
       },
       onModel: (m) => CaptchaModel.fromJson(m),

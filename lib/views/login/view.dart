@@ -65,7 +65,9 @@ class LoginView extends GetView<LoginController> {
         ElevatedButton(
           onPressed: () async {
             CaptchaModel data = CaptchaModel.empty();
+            showMyLoading();
             await data.update();
+            hideMyLoading();
           },
           child: Text('测试接口'),
         ),
