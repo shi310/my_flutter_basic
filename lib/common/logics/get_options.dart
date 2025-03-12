@@ -28,7 +28,7 @@ Future<void> getOptions({
         if (response.statusCode >= 200 && response.statusCode < 300) {
           final responseData = await response.transform(utf8.decoder).join();
           if (!completer.isCompleted) {
-            completer.complete(responseData); // 返回第一个成功的结果
+            completer.complete(responseData);
           }
         } else {
           MyLogger.w('获取配置发生了错误 --> HTTP 状态码: ${response.statusCode}');
@@ -73,9 +73,17 @@ Future<void> getOptions({
     MyLogger.l();
 
     onSuccess?.call();
-    return;
   } else {
-    onError?.call();
-    return;
+    showMyDialog(
+      title: '连接失败',
+      content: '请点击重新按钮重新尝试',
+      onCancel: () {},
+      onConfirm: () async {
+        onError?.call();
+        showMyLoading();
+        await getOptions(urls: urls, onError: onError, onSuccess: onSuccess);
+        hideMyLoading();
+      },
+    );
   }
 }

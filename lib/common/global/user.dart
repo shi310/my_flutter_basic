@@ -38,6 +38,9 @@ class UserController extends GetxController with WidgetsBindingObserver {
   // 切换到后台断开wss的时长
   Timer? _disconnectTimer;
 
+  // 是否使用过APP
+  String isUsedApp = '1';
+
   @override
   void onReady() {
     startCheckingForHotUpdates();

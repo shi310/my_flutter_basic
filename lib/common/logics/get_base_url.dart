@@ -8,11 +8,6 @@ Future<void> getBaseUrl({
   void Function(String)? onSuccess,
   void Function()? onError,
 }) async {
-  if (urls.isEmpty) {
-    MyLogger.w('传入的链接组为空，无法操作...');
-    onError?.call();
-    return;
-  }
 
   final client = HttpClient();
   final completer = Completer<String>();
@@ -26,6 +21,7 @@ Future<void> getBaseUrl({
         final response = await request.close();
 
         if (response.statusCode >= 200 && response.statusCode < 300) {
+          MyLogger.w('$url 健康检测成功');
           if (!completer.isCompleted) {
             completer.complete(url);
           }
@@ -49,10 +45,10 @@ Future<void> getBaseUrl({
   client.close();
 
   if (baseUrl.isNotEmpty) {
+    MyLogger.w('$baseUrl 被选定为 baseUrl');
     onSuccess?.call(baseUrl);
-    return;
   } else {
+    MyLogger.w('baseUrl 配置未知错误');
     onError?.call();
-    return;
   }
 }

@@ -21,6 +21,15 @@ class CaptchaModel {
         captchaLength = results.captchaLength;
         openCaptcha = results.openCaptcha;
       },
+      onError: (e) async {
+        showMyLoading();
+        await setMyDio(
+          onSuccess: () async {
+            await update();
+          }
+        );
+        hideMyLoading();
+      },
       onModel: (m) => CaptchaModel.fromJson(m),
     );
   }

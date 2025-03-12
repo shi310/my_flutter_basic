@@ -7,6 +7,7 @@ class MyDio {
     this.baseOptions,
     this.headers,
     this.onResponse,
+    this.onError,
     this.dioCode = 0,
   }) {
     if (isInitialized) {
@@ -31,8 +32,9 @@ class MyDio {
         await onResponse?.call(response);
         return handler.next(response);
       },
-      onError: (DioException err, handler) {
+      onError: (DioException err, handler) async {
         _logError(err);
+        await onError?.call(err);
         return handler.reject(err);
       },
     ));
@@ -42,6 +44,8 @@ class MyDio {
   final BaseOptions Function(BaseOptions options)? baseOptions;
   final Map<String, dynamic>? headers;
   final Future<void> Function(Response<dynamic> response)? onResponse;
+  final Future<void> Function(DioException error)? onError;
+
   final int dioCode;
 
   BaseOptions? dioOptions;

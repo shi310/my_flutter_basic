@@ -65,16 +65,7 @@ class LoginView extends GetView<LoginController> {
         ElevatedButton(
           onPressed: () async {
             CaptchaModel data = CaptchaModel.empty();
-            showMyLoading();
             await data.update();
-            hideMyLoading();
-            MyLogger.w('${data.toJson()}');
-            showMyDialog(
-              title: '返回数据',
-              content: '${data.toJson()}',
-              onConfirm: () {},
-              onCancel: () {},
-            );
           },
           child: Text('测试接口'),
         ),
@@ -143,12 +134,6 @@ class LoginView extends GetView<LoginController> {
           onPressed: () => Get.toNamed(MyRoutes.tetrisView),
           child: Text('俄罗斯方块'),
         ),
-
-        ElevatedButton(
-          onPressed: () {},
-          child: Text('path -> +2'),
-        ),
-
       ],
     );
 

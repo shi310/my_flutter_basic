@@ -1,30 +1,33 @@
 import 'package:my_flutter_basic/common/common.dart';
 import 'package:my_device_info/my_device_info.dart';
 
-Future<void> setMyDio() async {
-  showMyLoading();
+Future<void> setMyDio({
+  Future<dynamic> Function()? onSuccess,
+}) async {
+  if (UserController.to.baseUrlList.isEmpty) {
+    MyLogger.w('传入的链接组为空，无法配置Dio...');
+    return;
+  }
   await getBaseUrl(
     urls: UserController.to.baseUrlList,
     onSuccess: (baseUrl) async {
       await _setMyDio(baseUrl: baseUrl);
-      showMyDialog(
-        title: '配置成功',
-        content: 'baseUrl：$baseUrl',
-        onConfirm: () {},
-        onCancel: () {},
-      );
+      await onSuccess?.call();
     },
     onError: () {
       showMyDialog(
         title: '与服务器连接失败',
         content: '请稍后在重试',
         confirmText: '重试',
-        onConfirm: () => setMyDio(),
+        onConfirm: () async {
+          showMyLoading();
+          await setMyDio(onSuccess: onSuccess);
+          hideMyLoading();
+        },
         onCancel: () {},
       );
     }
   );
-  hideMyLoading();
 }
 
 Future<void> _setMyDio({
@@ -54,6 +57,9 @@ Future<void> _setMyDio({
         }
       }
     },
+    // onError: (error) async {
+    //   await setMyDio();
+    // },
     dioCode: 0,
   );
 }
