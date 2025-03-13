@@ -48,8 +48,19 @@ class UserController extends GetxController with WidgetsBindingObserver {
   }
 
   @override
+  void onInit() {
+    super.onInit();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void onClose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.onClose();
+  }
+
+  @override
   void didChangeAppLifecycleState(AppLifecycleState state) async {
-    // 监视 App 是否切换到后台
     switch (state) {
       case AppLifecycleState.resumed:
         MyLogger.w('app 切换到了前台');

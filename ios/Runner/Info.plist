@@ -109,7 +109,7 @@
             <string>com.project.my.flutter.basic</string>
             <key>CFBundleURLSchemes</key>
             <array>
-                <string>appchememy_flutter_basic</string>
+                <string>app_scheme_my_flutter_basic</string>
             </array>
         </dict>
     </array>
