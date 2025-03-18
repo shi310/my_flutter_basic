@@ -12,52 +12,60 @@ class TetrisController extends GetxController {
   Duration downDuration = const Duration(milliseconds: 1000);
 
   void onStartGame() {
-    state.isPause = false;
-    state.isDisable = false;
-    state.isStart = false;
-    if (pauseTimer != null) pauseTimer!.cancel();
+    // state.isPause = false;
+    // state.isDisable = false;
+    // state.isStart = false;
+    state.gameState = GameState.gaming;
+    update([state.builderBody]);
+
+    pauseTimer?.cancel();
     state.pauseTime = 0;
+
+    next();
+
+    downTimerStart();
+    gameTimerStart();
+  }
+
+  void onContinueGame() {
+    state.gameState = GameState.gaming;
+    update([state.builderBody]);
+
+    pauseTimer?.cancel();
+    state.pauseTime = 0;
+
     downTimerStart();
     gameTimerStart();
   }
 
   // 初始化
   Future<void> init() async {
-    state.gameData.value = GameData.get();
-    state.gameData.update((val) {});
+    state.gameData = GameData.get();
 
     state.gameTime = 0;
-    state.grade = 1;
+    state.gameLevel = 1;
     state.score = 0;
 
-    state.isDisable = true;
-    state.isPause = true;
-    state.isStart = true;
-    state.isGameOver = false;
-
-    // const downDuration =  Duration(milliseconds: 1000);
-    const waitDuration = Duration(milliseconds: 300);
-
-    setData(state.gameData.value.current.boxData);
-    await Future.delayed(waitDuration);
+    state.gameState = GameState.start;
   }
 
   // 暂停
   Future<void> onPauseGame() async {
-    if (state.isDisable) return;
-    state.isPause = true;
-    state.isDisable = true;
-    if (downTimer != null) downTimer!.cancel();
-    if (gameTimer != null) gameTimer!.cancel();
+    if (state.gameState == GameState.pause) return;
+    state.gameState = GameState.pause;
+    update([state.builderBody]);
+    downTimer?.cancel();
+    gameTimer?.cancel();
     pauseTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       state.pauseTime++;
+      update([state.builderTimerPause]);
     });
   }
 
   // 重置
   void onReset() {
-    if (downTimer != null) downTimer!.cancel();
-    if (gameTimer != null) gameTimer!.cancel();
+    downTimer?.cancel();
+    gameTimer?.cancel();
     init();
     onStartGame();
   }
@@ -76,41 +84,44 @@ class TetrisController extends GetxController {
     if (gameTimer == null || !gameTimer!.isActive) {
       gameTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
         state.gameTime++;
+        update([state.builderTimerGame]);
       });
     }
   }
 
   // 判断是否可以下降
   bool isCanDown() {
-    BoxData data = state.gameData.value.current.getDownData();
+    BoxData data = state.gameData.current.getDownData();
+    
     return (isValidData(data)) ? true : false;
   }
 
   // 判断是否可以左移
   bool isCanLeft() {
-    BoxData data = state.gameData.value.current.getLeftData();
+    BoxData data = state.gameData.current.getLeftData();
+    
     return (isValidData(data)) ? true : false;
   }
 
   // 判断是否可以右移
   bool isCanRight() {
-    BoxData data = state.gameData.value.current.getRightData();
+    BoxData data = state.gameData.current.getRightData();
+    
     return (isValidData(data)) ? true : false;
   }
 
   // 判断是否可以旋转
   bool isCanRotate() {
-    BoxData data = state.gameData.value.current.getRotateData();
+    BoxData data = state.gameData.current.getRotateData();
+    
     return (isValidData(data)) ? true : false;
   }
 
   // 下降
   void down() {
-    clearData(state.gameData.value.current.boxData);
-    state.gameData.update((val) {
-      val!.current.down();
-    });
-    setData(state.gameData.value.current.boxData);
+    clearData(state.gameData.current.boxData);
+    state.gameData.current.down();
+    setData(state.gameData.current.boxData);
   }
 
   // 单步下落
@@ -118,57 +129,51 @@ class TetrisController extends GetxController {
     if (isCanDown()) {
       down();
     } else {
-      await land(state.gameData.value.current.boxData);
+      await land(state.gameData.current.boxData);
     }
   }
 
   // 左移
   void onLeft() {
-    if (state.isDisable) return;
+    if (state.gameState != GameState.gaming) return;
     if (isCanLeft()) {
-      clearData(state.gameData.value.current.boxData);
-      state.gameData.update((val) {
-        val!.current.left();
-      });
-      setData(state.gameData.value.current.boxData);
+      clearData(state.gameData.current.boxData);
+      state.gameData.current.left();
+      setData(state.gameData.current.boxData);
     }
   }
 
   // 右移
   void onRight() {
-    if (state.isDisable) return;
+    if (state.gameState != GameState.gaming) return;
 
     if (isCanRight()) {
-      clearData(state.gameData.value.current.boxData);
-      state.gameData.update((val) {
-        val!.current.right();
-      });
-      setData(state.gameData.value.current.boxData);
+      clearData(state.gameData.current.boxData);
+      state.gameData.current.right();
+      setData(state.gameData.current.boxData);
     }
   }
 
   // 旋转
   void onRotate() {
-    if (state.isDisable) return;
+    if (state.gameState != GameState.gaming) return;
 
     if (isCanRotate()) {
-      clearData(state.gameData.value.current.boxData);
-      state.gameData.update((val) {
-        val!.current.rotate();
-      });
-      setData(state.gameData.value.current.boxData);
+      clearData(state.gameData.current.boxData);
+      state.gameData.current.rotate();
+      setData(state.gameData.current.boxData);
     }
   }
 
   // 一步到底
   Future<void> onDownFast() async {
-    if (state.isDisable) return;
+    if (state.gameState != GameState.gaming) return;
 
     if (isCanDown()) {
       down();
       onDownFast();
     } else {
-      await land(state.gameData.value.current.boxData);
+      await land(state.gameData.current.boxData);
     }
   }
 
@@ -177,10 +182,8 @@ class TetrisController extends GetxController {
     for (int y = 0; y < boxData.data.length; y++) {
       for (int x = 0; x < boxData.data[0].length; x++) {
         if (boxData.data[y][x] != 0) {
-          state.gameData.update((val) {
-            val!.data[y + boxData.origin.y][x + boxData.origin.x] =
-                boxData.data[y][x];
-          });
+          state.gameData.data[y + boxData.origin.y][x + boxData.origin.x] = boxData.data[y][x];
+          update([state.builderBody]);
         }
       }
     }
@@ -188,73 +191,67 @@ class TetrisController extends GetxController {
 
   // 游戏结束的动画
   Future<void> gameOverAnimation() async {
-    for (int y = state.gameData.value.data.length - 1; y >= 0; y--) {
+    for (int y = state.gameData.data.length - 1; y >= 0; y--) {
       await Future.delayed(const Duration(milliseconds: 30), () {
-          for (int x = 0; x < state.gameData.value.data[0].length; x++) {
-            state.gameData.update((val) {
-              val!.data[y][x] = 2;
-            });
+          for (int x = 0; x < state.gameData.data[0].length; x++) {
+            state.gameData.data[y][x] = 2;
           }
 
-          if (y <= state.gameData.value.next.child.length - 1) {
-            for (int x = 0;
-                x < state.gameData.value.next.child[0].length;
-                x++) {
-              state.gameData.update((val) {
-                val!.next.child[y][x] = 2;
-              });
+          if (y <= state.gameData.next.child.length - 1) {
+            for (int x = 0; x < state.gameData.next.child[0].length; x++) {
+              state.gameData.next.child[y][x] = 2;
             }
           }
         },
       );
+      update([state.builderBoxTetris]);
     }
   }
 
   // 着陆
   Future<void> land(BoxData boxData) async {
-    state.isDisable = true;
-    if (downTimer != null) downTimer!.cancel();
+    state.gameState = GameState.login;
+    downTimer?.cancel();
 
     // 先渲染
     for (int y = 0; y < boxData.data.length; y++) {
       for (int x = 0; x < boxData.data[0].length; x++) {
         if (boxData.data[y][x] != 0) {
-          state.gameData.update((val) {
-            val!.data[y + boxData.origin.y][x + boxData.origin.x] = 2;
-          });
+          state.gameData.data[y + boxData.origin.y][x + boxData.origin.x] = 2;
+          update([state.builderBody]);
         }
       }
     }
 
     // 然后判断游戏是否结束
     if (isGameOver()) {
-      if (gameTimer != null) gameTimer!.cancel();
+      gameTimer?.cancel();
       await gameOverAnimation();
-      state.isGameOver = true;
+      state.gameState = GameState.gameOver;
+      update([state.builderBody]);
     } else {
-      await remove(state.gameData.value.current.boxData);
+      await remove(state.gameData.current.boxData);
       await next();
     }
   }
 
   Future<void> next() async {
     await Future.delayed(const Duration(milliseconds: 500), () {
-        state.gameData.update((val) {
-          var data = val!.next.data;
-          var angle = val.next.angle;
-          val.current = Current(
-            data: data,
-            angle: angle,
-            boxData: BoxData(data: data[angle], origin: Origin(x: 3, y: 0)),
-          );
-          val.next = val.getNext();
-        });
-        setData(state.gameData.value.current.boxData);
-        state.isDisable = false;
-        downTimerStart();
-        gameTimerStart();
-      },
-    );
+      var data = state.gameData.next.data;
+      var angle = state.gameData.next.angle;
+      state.gameData.current = Current(
+        data: data,
+        angle: angle,
+        boxData: BoxData(data: data[angle], origin: Origin(x: 3, y: 0)),
+      );
+      update([state.builderBoxTetris]);
+      state.gameData.next = state.gameData.getNext();
+      update([state.builderBoxNext]);
+      setData(state.gameData.current.boxData);
+      state.gameState = GameState.gaming;
+      downTimerStart();
+      gameTimerStart();
+    });
   }
 
   // 是否可以消除
@@ -269,20 +266,19 @@ class TetrisController extends GetxController {
   // 如何可以消除就会直接消除
   Future<void> remove(BoxData boxData) async {
     int count = 0;
-    int y = state.gameData.value.data.length - 1;
+    int y = state.gameData.data.length - 1;
     while (y >= boxData.origin.y) {
-      if (isCanRemove(state.gameData.value.data[y])) {
+      if (isCanRemove(state.gameData.data[y])) {
         count++;
         // 为消行准备的一行空数据
         List<int> emptyLine = [];
-        for (int x = 0; x < state.gameData.value.data[0].length; x++) {
+        for (int x = 0; x < state.gameData.data[0].length; x++) {
           emptyLine.add(0);
         }
         await Future.delayed(const Duration(milliseconds: 100), () {
-          state.gameData.update((val) {
-            val!.data.removeAt(y);
-            val.data.insert(0, emptyLine);
-          });
+          state.gameData.data.removeAt(y);
+          state.gameData.data.insert(0, emptyLine);
+          update([state.builderBoxTetris]);
         });
       } else {
         y--;
@@ -297,24 +293,27 @@ class TetrisController extends GetxController {
     state.score += count * count * 100;
 
     if (state.score < 1600) {
-      state.grade = 1;
+      state.gameLevel = 1;
     } else if (state.score < 3200) {
-      state.grade = 2;
+      state.gameLevel = 2;
     } else if (state.score < 6400) {
-      state.grade = 3;
+      state.gameLevel = 3;
     } else if (state.score < 12800) {
-      state.grade = 4;
+      state.gameLevel = 4;
     } else if (state.score < 25600) {
-      state.grade = 5;
+      state.gameLevel = 5;
     }
 
-    downDuration = Duration(milliseconds: 1000 ~/ state.grade);
+
+    downDuration = Duration(milliseconds: 1000 ~/ state.gameLevel);
+    update([state.builderBoxScore, state.builderBoxLevel]);
+
   }
 
   // 判断游戏是否结束
   bool isGameOver() {
-    for (int x = 0; x < state.gameData.value.data[0].length; x++) {
-      if (state.gameData.value.data[0][x] == 2) {
+    for (int x = 0; x < state.gameData.data[0].length; x++) {
+      if (state.gameData.data[0][x] == 2) {
         return true;
       }
     }
@@ -325,11 +324,11 @@ class TetrisController extends GetxController {
   bool isValidPoint(Origin origin, int x, int y) {
     if (origin.x + x < 0) {
       return false;
-    } else if (origin.x + x >= state.gameData.value.data[0].length) {
+    } else if (origin.x + x >= state.gameData.data[0].length) {
       return false;
-    } else if (origin.y + y >= state.gameData.value.data.length) {
+    } else if (origin.y + y >= state.gameData.data.length) {
       return false;
-    } else if (state.gameData.value.data[origin.y + y][origin.x + x] == 2) {
+    } else if (state.gameData.data[origin.y + y][origin.x + x] == 2) {
       return false;
     }
     return true;
@@ -352,9 +351,8 @@ class TetrisController extends GetxController {
     for (int y = 0; y < boxData.data.length; y++) {
       for (int x = 0; x < boxData.data[0].length; x++) {
         if (boxData.data[y][x] != 0) {
-          state.gameData.update((val) {
-            val!.data[y + boxData.origin.y][x + boxData.origin.x] = 0;
-          });
+          state.gameData.data[y + boxData.origin.y][x + boxData.origin.x] = 0;
+          update([state.builderBoxTetris]);
         }
       }
     }

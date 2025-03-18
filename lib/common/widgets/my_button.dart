@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 
 enum MyButtonStyle {
   // 无限长度的按钮
@@ -18,7 +17,7 @@ enum MyButtonStyle {
   widget,
 }
 
-class MyButton extends StatelessWidget {
+class MyButton extends StatefulWidget {
   const MyButton({
     super.key,
     required this.myButtonStyle,
@@ -38,10 +37,8 @@ class MyButton extends StatelessWidget {
   final double? fontSize;
   final Widget child;
 
-
-  // 填充颜色的长按钮
   factory MyButton.filedLong({
-    required void Function()? onPressed, 
+    required void Function()? onPressed,
     required String text,
     Color? textColor,
     Color? color,
@@ -55,9 +52,8 @@ class MyButton extends StatelessWidget {
     child: FittedBox(child: Text(text)),
   );
 
-  // 填充颜色的长按钮
   factory MyButton.floatLeft({
-    required void Function()? onPressed, 
+    required void Function()? onPressed,
     required String text,
     Color? textColor,
     Color? color,
@@ -71,9 +67,8 @@ class MyButton extends StatelessWidget {
     child: Container(alignment: Alignment.centerLeft, child: FittedBox(child: Text(text))),
   );
 
-  // 填充颜色的短按钮
   factory MyButton.filedShort({
-    required void Function()? onPressed, 
+    required void Function()? onPressed,
     required String text,
     Color? textColor,
     Color? color,
@@ -87,23 +82,21 @@ class MyButton extends StatelessWidget {
     child: FittedBox(child: Text(text)),
   );
 
-  // 填充颜色的短按钮
   factory MyButton.filedWidget({
-    required void Function()? onPressed, 
+    required void Function()? onPressed,
     required Widget child,
     Color? color,
     double? radius,
   }) => MyButton(
-    myButtonStyle: MyButtonStyle.filledButtonShort,
-    onPressed: onPressed,
-    buttonColor: color,
-    radius: radius,
-    child: child
+      myButtonStyle: MyButtonStyle.filledButtonShort,
+      onPressed: onPressed,
+      buttonColor: color,
+      radius: radius,
+      child: child
   );
 
-  // 文字按钮
   factory MyButton.text({
-    required void Function()? onPressed, 
+    required void Function()? onPressed,
     required String text,
     Color? textColor,
     double? fontSize,
@@ -118,12 +111,11 @@ class MyButton extends StatelessWidget {
   );
 
   factory MyButton.icon({required void Function()? onPressed, required Widget icon}) => MyButton(
-    myButtonStyle: MyButtonStyle.iconButton,  
-    onPressed: onPressed, 
-    child: icon
+      myButtonStyle: MyButtonStyle.iconButton,
+      onPressed: onPressed,
+      child: icon
   );
 
-  // 文字按钮
   factory MyButton.widget({
     required void Function()? onPressed,
     required Widget child,
@@ -136,46 +128,55 @@ class MyButton extends StatelessWidget {
   );
 
   @override
+  MyButtonState createState() => MyButtonState();
+}
+
+class MyButtonState extends State<MyButton> {
+  double opacity = 1.0;
+
+  void changeOpacity(double value) {
+    setState(() {
+      opacity = value;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    switch (myButtonStyle) {
+    switch (widget.myButtonStyle) {
       case MyButtonStyle.filledButtonLong:
         return FilledButton(
-          onPressed: onPressed,
-          child: child,
+          onPressed: widget.onPressed,
+          child: widget.child,
         );
 
       case MyButtonStyle.filledButtonShort:
         return FilledButton(
-          onPressed: onPressed,
-          child: child,
+          onPressed: widget.onPressed,
+          child: widget.child,
         );
 
       case MyButtonStyle.textButton:
         return TextButton(
-          onPressed: onPressed,
-          child: child,
+          onPressed: widget.onPressed,
+          child: widget.child,
         );
 
       case MyButtonStyle.iconButton:
         return IconButton(
-          onPressed: onPressed, 
-          icon: child,
+          onPressed: widget.onPressed,
+          icon: widget.child,
         );
 
       default:
-        final opacity = 1.0.obs;
-
-        if (onPressed == null) return child;
-
         return GestureDetector(
-          onTap: onPressed,
-          onTapDown: (_) => opacity.value = 0.5,
-          onTapUp: (_) => opacity.value = 1,
-          onTapCancel: () => opacity.value = 1,
-          child: Obx(() => Opacity(
-            opacity: opacity.value, // 根据状态调整透明度
-            child: child,
-          )),
+          onTap: widget.onPressed,
+          onTapDown: (_) => changeOpacity(0.5),
+          onTapUp: (_) => changeOpacity(1),
+          onTapCancel: () => changeOpacity(1),
+          child: Opacity(
+            opacity: opacity,
+            child: widget.child,
+          ),
         );
     }
   }

@@ -1,41 +1,28 @@
 import 'dart:math';
-
-import 'package:get/get.dart';
-
 class TetrisState {
-  final gameData = GameData.get().obs;
+  GameData gameData = GameData.get();
 
-  final _gameTime = 0.obs;
-  set gameTime(int value) => _gameTime.value = value;
-  int get gameTime => _gameTime.value;
+  String builderBody = 'builder_body';
+  String builderBoxTetris = 'builder_box_tetris';
+  String builderBoxNext = 'builder_box_next';
+  String builderBoxLevel = 'builder_box_level';
+  String builderBoxScore = 'builder_box_score';
+  String builderTimerGame = 'builder_timer_game';
+  String builderTimerPause = 'builder_timer_pause';
 
-  final _pauseTime = 0.obs;
-  set pauseTime(int value) => _pauseTime.value = value;
-  int get pauseTime => _pauseTime.value;
+  int gameTime = 0;
+  int pauseTime = 0;
+  int score = 0;
+  int gameLevel = 1;
+  GameState gameState = GameState.start;
+}
 
-  final _score = 0.obs;
-  set score(int value) => _score.value = value;
-  int get score => _score.value;
-
-  final _grade = 1.obs;
-  set grade(int value) => _grade.value = value;
-  int get grade => _grade.value;
-
-  final _isDisable = false.obs;
-  set isDisable(bool value) => _isDisable.value = value;
-  bool get isDisable => _isDisable.value;
-
-  final _isPause = true.obs;
-  set isPause(bool value) => _isPause.value = value;
-  bool get isPause => _isPause.value;
-
-  final _isStart = true.obs;
-  set isStart(bool value) => _isStart.value = value;
-  bool get isStart => _isStart.value;
-
-  final _isGameOver = false.obs;
-  set isGameOver(bool value) => _isGameOver.value = value;
-  bool get isGameOver => _isGameOver.value;
+enum GameState {
+  pause,
+  start,
+  gameOver,
+  gaming,
+  login,
 }
 
 class Origin {
