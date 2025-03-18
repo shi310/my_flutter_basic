@@ -23,13 +23,13 @@ class TetrisView extends GetView<TetrisController> {
       padding: paddingInline,
       decoration: BoxDecoration(
         border: Border.all(
-          color: MyColors.dark.withValues(alpha: 0.1),
+          color: MyColors.inputHint.withValues(alpha: 0.4),
           width: 1,
         ),
-        color: MyColors.light,
+        color: MyColors.background,
       ),
       child: Container(
-        color: MyColors.dark.withValues(alpha: 0.1),
+        color: MyColors.inputHint.withValues(alpha: 0.4),
         width: size,
         height: size,
       ),
@@ -43,7 +43,7 @@ class TetrisView extends GetView<TetrisController> {
           color: MyColors.error,
           width: 1,
         ),
-        color: MyColors.light,
+        color: MyColors.background,
       ),
       child: Container(
         color: MyColors.error,
