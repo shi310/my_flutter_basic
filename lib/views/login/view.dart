@@ -140,7 +140,7 @@ class LoginView extends GetView<LoginController> {
     );
 
     return Scaffold(
-      appBar: AppBar(title: Text(Lang.activityClosed.tr)),
+      appBar: AppBar(title: Text(MyLanguage.activityClosed.tr)),
       body: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: wrap

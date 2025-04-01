@@ -1,5 +1,5 @@
 library;
 
-export 'init.dart';
+export 'initialized.dart';
 export 'user.dart';
 

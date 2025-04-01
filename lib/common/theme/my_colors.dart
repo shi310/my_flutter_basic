@@ -1,4 +1,4 @@
-part of 'theme.dart';
+part of 'my_theme.dart';
 
 class MyColors {
   // 主色-固定色

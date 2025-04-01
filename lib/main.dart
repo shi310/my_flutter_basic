@@ -15,13 +15,13 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       // title
-      title: 'King Game',
+      title: '我的框架',
 
       // 默认页面切换动画
       // 从右到左滑动
       defaultTransition: Transition.rightToLeftWithFade,
-      // 动画市场 300 毫秒
-      transitionDuration: const Duration(milliseconds: 300),
+      // 动画 500 毫秒
+      transitionDuration: const Duration(milliseconds: 500),
 
       // 路由
       getPages: MyPages.getPages,
@@ -34,17 +34,17 @@ class MyApp extends StatelessWidget {
 
       // APP字典，多语言切换
       // 字典
-      translations: MyLang(),
+      translations: MyLocale(),
       // 默认语言
-      locale: Get.deviceLocale,
+      locale: Get.locale,
+      // 语言切换回调
+      localeListResolutionCallback: localeListResolutionCallback,
       // 备用语言
-      fallbackLocale: MyLang.fallbackMode,
-
+      fallbackLocale: MyLocale.fallbackMode,
       // 系统字典，用来改变系统组件的语言
-      localizationsDelegates: MyLang.localizationsDelegates,
-
+      localizationsDelegates: MyLocale.localizationsDelegates,
       // 语言列表
-      supportedLocales: MyLang.supportedLocales,
+      supportedLocales: MyLocale.supportedLocales,
 
       // 主题
       theme: MyTheme().light,

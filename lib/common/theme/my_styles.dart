@@ -1,4 +1,4 @@
-part of 'theme.dart';
+part of 'my_theme.dart';
 
 class MyStyles {
   static TextStyle get inputHint => TextStyle(color: MyColors.inputHint, fontSize: 14);

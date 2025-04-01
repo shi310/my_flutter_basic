@@ -1,6 +1,6 @@
-part of 'my_lang.dart';
+part of 'my_locale.dart';
 
-abstract class Lang {
+abstract class MyLanguage {
   // 公共
   static const sendCode = 'send_code';
   static const send = 'send';

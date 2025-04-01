@@ -1,16 +1,19 @@
 import 'package:my_flutter_basic/common/common.dart';
 
-Future<void> setThemeLight() async {
-  await MyTheme.update(mode: MyThemeMode.light);
-  await MyCache.putFile('themeMode', MyThemeMode.light.toString());
+void setThemeLight() {
+  MyTheme.update(mode: MyThemeMode.light);
+  MyCache.putFile(MyConfig.shard.themeModeKey, MyThemeMode.light.toThemeModeTag());
+  UserController.to.myThemeMode = MyThemeMode.light;
 }
 
-Future<void> setThemeDark() async {
-  await MyTheme.update(mode: MyThemeMode.dark);
-  await MyCache.putFile('themeMode', MyThemeMode.dark.toString());
+void setThemeDark() {
+  MyTheme.update(mode: MyThemeMode.dark);
+  MyCache.putFile(MyConfig.shard.themeModeKey, MyThemeMode.dark.toThemeModeTag());
+  UserController.to.myThemeMode = MyThemeMode.dark;
 }
 
-Future<void> setThemeSystem() async {
-  await MyTheme.update(mode: MyThemeMode.system);
-  await MyCache.removeFile('themeMode');
+void setThemeSystem() {
+  MyTheme.update(mode: MyThemeMode.system);
+  MyCache.removeFile(MyConfig.shard.themeModeKey);
+  UserController.to.myThemeMode = null;
 }

@@ -1,4 +1,4 @@
-part of 'theme.dart';
+part of 'my_theme.dart';
 class MyIcons {
   static Icon get right => Icon(Icons.chevron_right, color: MyColors.iconGrey);
   static Icon get brokenImage => Icon(Icons.broken_image, size: 64, color: MyColors.textDefault);
