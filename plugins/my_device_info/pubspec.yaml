@@ -4,7 +4,7 @@ version: 0.0.1
 #homepage:
 
 environment:
-  sdk: ^3.5.4
+  sdk: '>=3.3.4 <4.0.0'
   flutter: '>=3.3.0'
 
 dependencies:
@@ -14,15 +14,6 @@ dependencies:
     sdk: flutter
   web: ^1.1.0
   plugin_platform_interface: ^2.1.8
-
-  # 包信息
-  package_info_plus: ^8.1.2
-
-  # 设备信息
-  device_info_plus: ^11.2.0
-
-  # 重新启动APP
-  restart_app: ^1.3.2
 
 dev_dependencies:
   flutter_test:

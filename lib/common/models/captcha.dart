@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:my_flutter_basic/common/common.dart';
+import 'package:flutter/cupertino.dart';
+
+import '../common.dart';
 
 class CaptchaModel {
   CaptchaModel({
@@ -15,25 +16,15 @@ class CaptchaModel {
   bool openCaptcha;
 
   Future<void> update() async {
-    await UserController.to.myDio?.get<CaptchaModel>(ApiPath.base.captcha,
+    await UserController.to.myHttpClient?.get<CaptchaModel>(ApiPath.base.captcha,
       onSuccess: (code, msg, results) async {
         captchaId = results.captchaId;
         picPath = results.picPath;
         captchaLength = results.captchaLength;
         openCaptcha = results.openCaptcha;
       },
-      onError: (e) async {
-        showMyLoading();
-        if (isResolve(e)) {
-          await setMyDio(
-            onSuccess: () async {
-              await update();
-            }
-          );
-        } else {
-          MyAlert.showSnack(child: Text(e.type.toString(), style: TextStyle(color: Colors.white)));
-        }
-        hideMyLoading();
+      onError: (response) async {
+        MyAlert.showSnack(child: Text('❌ 错误信息 => ${response?.statusText}'));
       },
       onModel: (m) => CaptchaModel.fromJson(m),
     );
@@ -71,7 +62,7 @@ class CaptchaKeyModel {
   int type;
 
   Future<void> update() async {
-    await UserController.to.myDio?.get<CaptchaKeyModel>(ApiPath.base.getCaptchaKey,
+    await UserController.to.myHttpClient?.get<CaptchaKeyModel>(ApiPath.base.getCaptchaKey,
       onSuccess: (code, msg, results) async {
         captchaId = results.captchaId;
         type = results.type;

@@ -1,36 +1,33 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
-import 'package:web_socket_channel/io.dart';
 
-class MyWss {
-  MyWss({
+import '../common.dart';
+
+
+class MySocket {
+  MySocket({
     required this.urls,
     required this.isCanConnect,
     required this.heartbeatMessage,
+    required this.token,
     this.heartbeatSeconds = 10,
-    this.headers = const {},
-    this.maxRetryCount = 3,
-    this.retrySeconds = 1,
-    this.timeoutSeconds = 2,
-    this.onMaxRetryOut,
+    this.onConnectError,
     this.onMessageReceived,
+
   });
 
   // 传参
   final List<String> urls;
-  final Map<String, dynamic> headers;
   final void Function(dynamic)? onMessageReceived;
-  final int maxRetryCount;
-  final int retrySeconds;
   final Future<bool> Function() isCanConnect;
-  final void Function()? onMaxRetryOut;
+  final void Function()? onConnectError;
   final dynamic heartbeatMessage;
   final int heartbeatSeconds;
-  final int timeoutSeconds;
+  final String token;
 
   // WebSocket 连接对象
-  IOWebSocketChannel? _webSocketChannel;
+  WebSocket? _webSocketChannel;
 
   // 心跳定时器 和 发送心跳的时间
   Timer? _heartbeatTimer;
@@ -51,12 +48,19 @@ class MyWss {
   // 连接过的 url 数量
   int _urlCount = 0;
 
-  // ws 重置到初始化状态
+  // 单个链接的重连次数
+  final int _maxRetryCount = 1;
+
+  // 最后收到服务器心跳返回的时间
+  DateTime lastHeartbeatResponseTime = DateTime.now();
+
+  // 连接
   Future<void> connect() async {
     _retryAttempts = 0;
     await _retryConnection();
   }
 
+  // ws 重置到初始化状态
   Future<void> reset() async {
     await close();
     _retryAttempts = 0;
@@ -64,15 +68,17 @@ class MyWss {
     await _retryConnection();
   }
 
-  /// WebSocket 连接方法
+  // WebSocket 连接方法
   Future<void> _connectWebSocket() async {
+    final url = '${urls[_index]}?X-token=$token';
+
     if (_isConnected) {
-      log("⚠️ wss: ${urls[_index]} 已经连接...");
+      log("⚠️ wss: $url 已经连接...");
       return;
     }
 
     if (_isConnecting) {
-      log("⚠️ wss: ${urls[_index]} 正在连接...️");
+      log("⚠️ wss: $url 正在连接...️");
       return;
     }
 
@@ -82,39 +88,24 @@ class MyWss {
     }
 
     if (!await isCanConnect()) {
-      log("⚠️ ${urls[_index]} -> 当前状态不允许连接 ⚠️");
+      log("⚠️ $url -> 当前状态不允许连接 ⚠️");
       return;
     }
 
-    log("🔗 尝试连接 WebSocket: ${urls[_index]}");
+    log("🔗 尝试连接 WebSocket: $url");
     _isConnecting = true;
 
     try {
-      _webSocketChannel = IOWebSocketChannel.connect(
-        Uri.parse(urls[_index]),
-        headers: headers,
-        pingInterval: Duration(seconds: heartbeatSeconds),
-        connectTimeout: Duration(seconds: timeoutSeconds),
-        customClient: HttpClient()..badCertificateCallback = (cert, host, port) => true,
-      );
+      _webSocketChannel = await WebSocket.connect(url).timeout(MyConfig.time.out * 0.3);
 
-      await _webSocketChannel?.ready;
+      _onConnectionOpen();
 
-      _webSocketChannel?.stream.listen(
-        _onMessageReceived,
-        onDone: _onConnectionDone,
+      _webSocketChannel?.listen(_onMessageReceived,
         onError: _onConnectionError,
+        onDone: _onConnectionDone,
         cancelOnError: true,
       );
 
-      _isConnected = true;
-      _isClosedByUser = false;
-      _isConnecting = false;
-      _retryAttempts = 0;
-      _urlCount = 0;
-      _sendHeartBeat();
-
-      log('✅ WebSocket 连接成功: ${urls[_index]}');
     } catch (e) {
       log('❌ ${urls[_index]} 连接失败 -> : $e');
       _isConnecting = false;
@@ -128,12 +119,12 @@ class MyWss {
     timer = null;
   }
 
-  /// 处理接收到的消息
+  // 处理接收到的消息
   void _onMessageReceived(message) {
     onMessageReceived?.call(message);
   }
 
-  /// WebSocket 连接关闭时处理
+  // WebSocket 连接关闭时处理
   void _onConnectionDone() {
     log('❌❌❌❌❌ WebSocket: ${urls[_index]} 已经关闭 -- ${DateTime.now()}');
     _isConnected = false;
@@ -141,22 +132,34 @@ class MyWss {
     if (!_isClosedByUser) connect();
   }
 
-  /// WebSocket 连接错误时处理
-  void _onConnectionError(error) {
-    log('❌❌❌❌❌ WebSocket: ${urls[_index]} 连接错误 -- ${DateTime.now()}');
-    log(error.toString());
+  // WebSocket 连接错误时处理
+  void _onConnectionError(error, extraParam) {
+    log('❌❌❌❌❌ WebSocket: ${urls[_index]} 连接错误 $error, $extraParam -- ${DateTime.now()}');
     _isConnected = false;
     _cancelTimer(_heartbeatTimer);
-    connect();
+    if (!_isClosedByUser) connect();
   }
 
-  /// 重连机制
+  void _onConnectionOpen() {
+    _isConnected = true;
+    _isClosedByUser = false;
+    _isConnecting = false;
+    _retryAttempts = 0;
+    _urlCount = 0;
+    lastHeartbeatResponseTime = DateTime.now();
+    // send(heartbeatMessage);
+    _sendHeartBeat();
+
+    log('✅ WebSocket 连接成功: ${urls[_index]}');
+  }
+
+  // 重连机制
   Future<void> _retryConnection() async {
-    if (_retryAttempts >= maxRetryCount) {
-      log('🛑 ${urls[_index]} 达到最大重连次数');
+    if (_retryAttempts >= _maxRetryCount) {
+      // log('🛑 ${urls[_index]} 达到最大重连次数');
 
       if (_urlCount == urls.length - 1) {
-        onMaxRetryOut?.call();
+        onConnectError?.call();
       } else {
         _index = (_index + 1) % urls.length;
         _urlCount++;
@@ -175,19 +178,14 @@ class MyWss {
     }
   }
 
-  /// 发送心跳包
+  // 发送心跳包
   void _sendHeartBeat() {
     _cancelTimer(_heartbeatTimer);
     if (!_isConnected) return;
 
     _heartbeatTimer = Timer.periodic(Duration(seconds: heartbeatSeconds), (timer) {
       if (_isConnected) {
-        try {
-          send(heartbeatMessage);
-          log('💓 心跳包发送成功');
-        } catch (e) {
-          log('💔 心跳包发送失败: $e');
-        }
+        send(heartbeatMessage);
       } else {
         log('💔 WebSocket 未连接，停止发送心跳');
         _cancelTimer(_heartbeatTimer);
@@ -195,7 +193,7 @@ class MyWss {
     });
   }
 
-  /// 断开 WebSocket 连接
+  // 断开 WebSocket 连接
   Future<void> close() async {
     _isClosedByUser = true;
     _isConnected = false;
@@ -203,10 +201,7 @@ class MyWss {
     _cancelTimer(_heartbeatTimer);
 
     try {
-      await _webSocketChannel?.sink.close().timeout(Duration(seconds: timeoutSeconds), onTimeout: () {
-        log('⏰ 关闭操作超时: ${urls[_index]}');
-        return null;
-      });
+      await _webSocketChannel?.close(1000, '客户端主动断开链接');
     } catch (e) {
       log('❌ WebSocket: ${urls[_index]} 关闭时发生错误: $e');
     } finally {
@@ -214,11 +209,21 @@ class MyWss {
     }
   }
 
-  /// 发送消息
+  // 发送消息
   void send(data) {
     if (_isConnected && _webSocketChannel != null) {
       try {
-        _webSocketChannel?.sink.add(data);
+        final time = DateTime.now();
+        // 比较 time 和 lastHeartbeatResponseTime 的差值
+        final timeDifference = time.difference(lastHeartbeatResponseTime).inSeconds;
+        if (timeDifference > heartbeatSeconds * 2) {
+          log('🙅💔🙅 WebSocket: ${urls[_index]} 未收到心跳包返回，疑似与服务器断开连接断 -- ${DateTime.now()}');
+          close();
+          _retryConnection();
+          return;
+        }
+        _webSocketChannel?.add(data);
+        log('💓 心跳包发送成功');
       } catch (e) {
         log('>>>>> 😔 消息发送失败（ ${DateTime.now()} ) --> $e');
         _retryConnection();

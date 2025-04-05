@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
-import 'package:dio/dio.dart';
+
+import 'package:get/get_connect/connect.dart';
 
 
 class MyEnvironment {
@@ -30,17 +31,18 @@ class MyEnvironment {
 
   Future<String> _getConfig(List<String> urls) async {
     final Duration timeout = Duration(seconds: 10);
-    final Dio dio = Dio();
+
+    final getConnect = GetHttpClient(timeout: timeout);
+
     String result = '';
 
     await Future.any(urls.asMap().entries.map((e) async {
       log('正在获取第 ${e.key + 1} 个地址的配置 -> ${e.value}');
       try {
-        final request = await dio.get(e.value,
-          options: Options(responseType: ResponseType.plain),
-        ).timeout(timeout);
+        final request = await getConnect.get(e.value);
+
         if (request.statusCode != null && (request.statusCode! >= 200 && request.statusCode! < 300)) {
-          final String responseBody = request.data.toString();
+          final String responseBody = request.bodyString ?? '';
           if (result.isEmpty) {
             result = responseBody;
             log('第 ${e.key + 1} 个地址获取配置成功 -> $responseBody');
@@ -58,7 +60,7 @@ class MyEnvironment {
       }
     }));
 
-    dio.close();
+    getConnect.close();
     return result;
   }
 }

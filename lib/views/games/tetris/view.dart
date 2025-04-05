@@ -53,8 +53,8 @@ class TetrisView extends GetView<TetrisController> {
     );
 
     Widget buildNextBox() {
-      List<Widget> children = controller.state
-          .gameData.next.data[controller.state.gameData.next.angle]
+      List<Widget> children = controller
+          .gameData.next.data[controller.gameData.next.angle]
           .map((e) => Row(
               children: e.map((i) => i == 0 ? defaultBox : selectBox).toList()))
           .toList();
@@ -76,8 +76,8 @@ class TetrisView extends GetView<TetrisController> {
         ),
       ),
       padding: const EdgeInsets.all(6),
-      child: GetBuilder<TetrisController>(id: controller.state.builderBoxTetris, builder: (controller) {
-        List<Widget> children = controller.state.gameData.data
+      child: GetBuilder<TetrisController>(id: controller.builderBoxTetris, builder: (controller) {
+        List<Widget> children = controller.gameData.data
             .map((e) => Row(
             children: e
                 .map((e) => Container(
@@ -100,8 +100,8 @@ class TetrisView extends GetView<TetrisController> {
           style: Theme.of(context).textTheme.labelLarge,
         ),
         const SizedBox(height: 10),
-        GetBuilder<TetrisController>(id: controller.state.builderTimerGame, builder: (controller) {
-          return Text(MyTimer.getDuration(controller.state.gameTime),
+        GetBuilder<TetrisController>(id: controller.builderTimerGame, builder: (controller) {
+          return Text(MyTimer.getDuration(controller.gameTime),
             style: Theme.of(context).textTheme.titleLarge,
           );
         }),
@@ -111,8 +111,8 @@ class TetrisView extends GetView<TetrisController> {
           style: Theme.of(context).textTheme.labelLarge,
         ),
         const SizedBox(height: 10),
-        GetBuilder<TetrisController>(id: controller.state.builderBoxLevel,builder: (controller) {
-          return Text('${controller.state.gameLevel}',
+        GetBuilder<TetrisController>(id: controller.builderBoxLevel,builder: (controller) {
+          return Text('${controller.gameLevel}',
             style: Theme.of(context).textTheme.titleLarge,
           );
         }),
@@ -122,8 +122,8 @@ class TetrisView extends GetView<TetrisController> {
           style: Theme.of(context).textTheme.labelLarge,
         ),
         const SizedBox(height: 10),
-        GetBuilder<TetrisController>(id: controller.state.builderBoxScore,builder: (controller) {
-          return Text('${controller.state.score}',
+        GetBuilder<TetrisController>(id: controller.builderBoxScore,builder: (controller) {
+          return Text('${controller.score}',
             style: Theme.of(context).textTheme.titleLarge,
           );
         }),
@@ -133,7 +133,7 @@ class TetrisView extends GetView<TetrisController> {
           style: Theme.of(context).textTheme.labelLarge,
         ),
         const SizedBox(height: 10),
-        GetBuilder<TetrisController>(id: controller.state.builderBoxNext, builder: (controller) => buildNextBox()),
+        GetBuilder<TetrisController>(id: controller.builderBoxNext, builder: (controller) => buildNextBox()),
         const SizedBox(height: 40),
         FilledButton(onPressed: controller.onPauseGame, child: const Text('暂停')),
         const SizedBox(height: 20),
@@ -278,8 +278,8 @@ class TetrisView extends GetView<TetrisController> {
               const SizedBox(height: 60),
               Text('游戏暂停中', style: TextStyle(color: MyColors.light, fontSize: 18)),
               const SizedBox(height: 20),
-              GetBuilder<TetrisController>(id: controller.state.builderTimerPause, builder: (controller) {
-                return Text(MyTimer.getDuration(controller.state.pauseTime),
+              GetBuilder<TetrisController>(id: controller.builderTimerPause, builder: (controller) {
+                return Text(MyTimer.getDuration(controller.pauseTime),
                     style: TextStyle(color: MyColors.light, fontSize: 20)
                 );
               }),
@@ -316,24 +316,24 @@ class TetrisView extends GetView<TetrisController> {
               const SizedBox(height: 20),
               Text('你的得分', style: TextStyle(color: MyColors.light, fontSize: 18)),
               const SizedBox(height: 10),
-              GetBuilder<TetrisController>(id: controller.state.builderBoxScore, builder: (controller) {
-                return Text('${controller.state.score}',
+              GetBuilder<TetrisController>(id: controller.builderBoxScore, builder: (controller) {
+                return Text('${controller.score}',
                   style: TextStyle(color: MyColors.light, fontSize: 20),
                 );
               }),
               const SizedBox(height: 20),
               Text('你的等级', style: TextStyle(color: MyColors.light, fontSize: 18)),
               const SizedBox(height: 10),
-              GetBuilder<TetrisController>(id: controller.state.builderBoxScore, builder: (controller) {
-                return Text('${controller.state.gameLevel}',
+              GetBuilder<TetrisController>(id: controller.builderBoxScore, builder: (controller) {
+                return Text('${controller.gameLevel}',
                     style: TextStyle(color: MyColors.light, fontSize: 20)
                 );
               }),
               const SizedBox(height: 20),
               Text('游戏时长', style: TextStyle(color: MyColors.light, fontSize: 18)),
               const SizedBox(height: 10),
-              GetBuilder<TetrisController>(id: controller.state.builderTimerGame, builder: (controller) {
-                return Text(MyTimer.getDuration(controller.state.gameTime),
+              GetBuilder<TetrisController>(id: controller.builderTimerGame, builder: (controller) {
+                return Text(MyTimer.getDuration(controller.gameTime),
                     style: TextStyle(color: MyColors.light, fontSize: 20)
                 );
               }),
@@ -353,8 +353,11 @@ class TetrisView extends GetView<TetrisController> {
       ],
     );
 
-    var body = GetBuilder<TetrisController>(id: controller.state.builderBody, builder: (controller) {
-      return switch (controller.state.gameState) {
+    var body = GetBuilder<TetrisController>(id: controller.builderBody, builder: (controller) {
+      if (!controller.isInitialized) {
+        return SizedBox();
+      }  
+      return switch (controller.gameState) {
         GameState.start => startBody,
         GameState.pause => pauseBody,
         GameState.gameOver => gameOverBody,

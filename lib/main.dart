@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       // 从右到左滑动
       defaultTransition: Transition.rightToLeftWithFade,
       // 动画 500 毫秒
-      transitionDuration: const Duration(milliseconds: 500),
+      transitionDuration: MyConfig.time.pageTransition,
 
       // 路由
       getPages: MyPages.getPages,

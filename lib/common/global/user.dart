@@ -1,17 +1,17 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:my_device_info/models/my_device_info_model.dart';
-import 'package:my_flutter_basic/common/common.dart';
 import 'package:shorebird_code_push/shorebird_code_push.dart';
+
+import '../common.dart';
 
 class UserController extends GetxController with WidgetsBindingObserver {
   static UserController get to => Get.find();
-  // dio 请求
-  MyDio? myDio;
+  // 网络请求
+  MyHttpClient? myHttpClient;
 
   // wss 通信
-  MyWss? myWss;
+  MySocket? mySocket;
 
   // 是否允许连接 wss
   bool isWssCanConnection = true;
@@ -23,7 +23,7 @@ class UserController extends GetxController with WidgetsBindingObserver {
   List<String> wssUrlList = [];
 
   // 用户 token
-  String userToken = '';
+  String userToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVVUlEIjoiMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwIiwiSUQiOjMwLCJVc2VybmFtZSI6ImZ1Z3VpMDAxIiwiUGhvbmUiOiIxNTgwNTA2MDAwMSIsIkF1dGhvcml0eUlkIjowLCJBY2NvdW50VHlwZSI6MSwiSXNBdXRoIjozLCJCdWZmZXJUaW1lIjo4NjQwMCwiaXNzIjoicW1QbHVzIiwiYXVkIjpbIkdWQSJdLCJleHAiOjE3NDQyNjc0OTgsIm5iZiI6MTc0MzY2MjY5OH0.v0zbLVTCbtHdyXJ0f91S0OkKNcybzV4mwb3b0Lp2tMI';
 
   // 热更新定时器
   Timer? timerHotUpdate;
@@ -32,7 +32,7 @@ class UserController extends GetxController with WidgetsBindingObserver {
   ShorebirdUpdater shorebirdUpdater = ShorebirdUpdater();
 
   // 应用信息
-  MyDeviceInfoModel? deviceInfo;
+  MyAppInfoModel? myAppInfo;
 
   // 切换到后台断开wss的时长
   Timer? _disconnectTimer;
@@ -71,8 +71,8 @@ class UserController extends GetxController with WidgetsBindingObserver {
     MyLogger.w('检测到 app 切换到了前台...');
     _disconnectTimer?.cancel();
     _disconnectTimer = null;
-    if (isWssCanConnection) {
-      myWss?.connect();
+    if (UserController.to.isWssCanConnection) {
+      mySocket?.connect();
     }
   }
 
@@ -80,7 +80,8 @@ class UserController extends GetxController with WidgetsBindingObserver {
     MyLogger.w('检测到 app 切换到了后台...');
     _disconnectTimer = Timer(Duration(minutes: 1), () {
       MyLogger.w('1 分钟未回到前台，断开 WebSocket');
-      myWss?.close();
+      mySocket?.close();
+      isWssCanConnection = true;
     });
   }
 
@@ -88,8 +89,8 @@ class UserController extends GetxController with WidgetsBindingObserver {
     MyLogger.w('检测到 App 彻底退出...');
     timerHotUpdate?.cancel();
     _disconnectTimer?.cancel();
-    myWss?.close();
-    myDio?.cancel();
+    mySocket?.close();
+    myHttpClient?.close();
     WidgetsBinding.instance.removeObserver(this);
   }
 

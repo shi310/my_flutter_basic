@@ -1,21 +1,4 @@
 import 'dart:math';
-class TetrisState {
-  GameData gameData = GameData.get();
-
-  String builderBody = 'builder_body';
-  String builderBoxTetris = 'builder_box_tetris';
-  String builderBoxNext = 'builder_box_next';
-  String builderBoxLevel = 'builder_box_level';
-  String builderBoxScore = 'builder_box_score';
-  String builderTimerGame = 'builder_timer_game';
-  String builderTimerPause = 'builder_timer_pause';
-
-  int gameTime = 0;
-  int pauseTime = 0;
-  int score = 0;
-  int gameLevel = 1;
-  GameState gameState = GameState.start;
-}
 
 enum GameState {
   pause,

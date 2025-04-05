@@ -13,7 +13,6 @@ Future<void> getBaseUrl({
   final completer = Completer<String>();
   final tasks = <Future>[];
 
-
   for (var url in urls) {
     tasks.add(Future(() async {
       try {

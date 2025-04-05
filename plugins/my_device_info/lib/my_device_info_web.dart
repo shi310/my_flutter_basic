@@ -45,8 +45,6 @@ class MyDeviceInfoWeb extends MyDeviceInfoPlatform {
       id: platform,
       brand: brand,
       systemVersion: userAgent,
-      appName: '',
-      appVersion: '',
     );
   }
 
