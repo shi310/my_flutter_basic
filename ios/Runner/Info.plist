@@ -112,6 +112,22 @@
                 <string>app_scheme_my_flutter_basic</string>
             </array>
         </dict>
+
+        <!-- open install 的拉起方式 -->
+        <dict>
+            <key>CFBundleTypeRole</key>
+            <string>Editor</string>
+            <key>CFBundleURLName</key>
+            <string>w65l5p</string>
+            <key>CFBundleURLSchemes</key>
+            <array>
+                <string>w65l5p</string>
+            </array>
+        </dict>
     </array>
+
+    <!-- open install -->
+    <key>com.openinstall.APP_KEY</key>
+    <string>w65l5p</string>
 </dict>
 </plist>

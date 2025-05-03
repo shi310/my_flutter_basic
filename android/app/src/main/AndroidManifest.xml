@@ -46,7 +46,14 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="app_scheme_my_flutter_basic" android:host="com.project.my.flutter.basic" />
+                <data android:scheme="app_scheme_my_flutter_basic"/>
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="w65l5p"/>
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
