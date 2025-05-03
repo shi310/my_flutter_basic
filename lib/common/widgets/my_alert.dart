@@ -224,7 +224,11 @@ class _SnackBarWidget extends StatelessWidget {
                   child: IntrinsicHeight(
                     child: Center(
                       child: Material(
+                        textStyle: TextStyle(
+                          color: Colors.white,
+                        ),
                         borderRadius: const BorderRadius.all(Radius.circular(8)),
+                        clipBehavior: Clip.antiAlias,
                         color: Colors.black87,
                         child: SingleChildScrollView(
                           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),

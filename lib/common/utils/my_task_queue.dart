@@ -1,6 +1,10 @@
 import 'dart:collection';
 
 class MyTaskQueue {
+  static final MyTaskQueue _instance = MyTaskQueue._internal();
+  factory MyTaskQueue() => _instance;
+  MyTaskQueue._internal();
+
   final _taskQueue = Queue<Future<void> Function()>();
   bool _isExecuting = false;
 

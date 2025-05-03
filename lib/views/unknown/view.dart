@@ -9,7 +9,7 @@ class UnknownView extends GetView<UnknownController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(controller.state.title)),
+      appBar: AppBar(title: Text('Unknown View')),
       body: Container(color: Colors.blue,),
     );
   }

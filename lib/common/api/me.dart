@@ -25,4 +25,35 @@ class _Me {
   final String getCustomer = '/me/getChatInfo';
   // 获取公告列表
   final String getPublicNotice = '/me/getPopupNotice';
+  // 获取消息常见问题
+  final String getCustomerFaqList = '/me/getQuestions';
+  // 获取消息常见问题类型
+  final String getCustomerFaqType = '/me/getTypes';
+  // 反馈中心上传附件
+  final String uploadFeedbackAttachment = '/me/attachment';
+  // 建议反馈
+  final String feedback = '/me/feedback';
+  // 统计仲裁客服问题类型
+  final String countArbitrationType = '/me/statisticsArbitrationCategory';
+  // 获取服务器信息，服务器当前时间
+  final String getServerInfo = '/me/getServerInfo';
+  final String readVersionNotice = '/me/readVersionNotice';
+  final String getVersionNoticeRedDot = '/me/getVersionNoticeRedDot';
+
+  final String getLoginCustomerConfig = '/me/getLoginCustomerConfig';
+  final String getLoginCustomerAnswer = '/me/getLoginCustomerAnswer';
+  final String getLoginCustomerType = '/me/getLoginCustomerType';
+  final String getFeedback = '/me/getFeedback';
+
+  // 获取余额说明信息
+  final String getBalanceTips = '/me/getBalanceTips';
+
+  // 统计子问题点击次数
+  final String countSubQuestionClick = '/me/autoIncrement/question';
+  // 统计答案点击次数
+  final String countAnswerClick = '/me/autoIncrement/answer';
+  // 统计大类的统计人数和次数
+  final String countMainQuestionClick = '/me/autoIncrement/category/answer';
+  // 统计大类的客服点击次数
+  final String countMainCustomerClick = '/me/autoIncrement/category/question';
 }

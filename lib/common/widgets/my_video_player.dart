@@ -115,7 +115,7 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
       loadingContent,
     ]);
 
-    final size = MediaQuery.of(context).size.width - 40 - 32;
+    final size = MediaQuery.of(context).size.width;
 
     // 加载中的组成方式：
     // 封面图放最底下

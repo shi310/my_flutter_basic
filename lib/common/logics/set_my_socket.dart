@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import '../common.dart';
 
@@ -21,9 +23,14 @@ void _onConnectError() async {
   if (UserController.to.isWssCanConnection) {
     UserController.to.isWssCanConnection = false;
     await showMyDialog(
-      title: '连接超时',
-      content: '请检查您的网络连接并重试',
-      confirmText: '重试',
+      title: Text(MyLanguage.wssErrorTitle.tr, style: TextStyle(
+        fontSize: MyFontSize.titleSmall.value,
+        fontWeight: FontWeight.w600,
+      )),
+      content: Text(MyLanguage.wssErrorContent.tr, style: TextStyle(
+        fontSize: MyFontSize.body.value,
+      )),
+      confirmText: MyLanguage.retry.tr,
       onConfirm: () {
         UserController.to.mySocket?.reset();
       }

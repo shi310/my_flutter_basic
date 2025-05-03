@@ -1,36 +1,37 @@
-part of 'my_theme.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class MyColors {
   // 主色-固定色
-  static Color get primary => const Color(0xFF586BF9);
+  static Color get primary => Get.isDarkMode ? const Color(0xFF586BF9) : const Color(0xFF586BF9);
   // 主色上面的颜色
-  static Color get onPrimary => const Color(0xFFFFFFFF);
+  static Color get onPrimary => Get.isDarkMode ? const Color(0xFFFFFFFF) :  const Color(0xFFFFFFFF);
   // 背景色 / 主题色
   static Color get background => Get.isDarkMode ? const Color(0xFF151516) : const Color(0xFFF5F8FC);
   // 背景上的反色，例如文字
   static Color get onBackground => Get.isDarkMode ? const Color(0xFFF5F8FC) : const Color(0xFF333334);
   // 错误的颜色
-  static Color get error => const Color(0xFFDF0000);
+  static Color get error => Get.isDarkMode ? const Color(0xFFDF0000) : const Color(0xFFDF0000);
   // 待确认
-  static Color get onPending => const Color(0xFFFFA100);
+  static Color get onPending => Get.isDarkMode ? const Color(0xFFFFA100) : const Color(0xFFFFA100);
   // 订单超时
-  static Color get onTimeout => const Color(0xFFB238C5);
+  static Color get onTimeout => Get.isDarkMode ? const Color(0xFFB238C5) : const Color(0xFFB238C5);
 
   // 待收款
-  static Color get onReceiving => const Color(0xFFC56538);
+  static Color get onReceiving => Get.isDarkMode ? const Color(0xFFC56538) : const Color(0xFFC56538);
 
   // 取消
-  static Color get onCancel => const Color(0xFF999999);
+  static Color get onCancel => Get.isDarkMode ? const Color(0xFF999999) : const Color(0xFF999999);
   // 错误颜色上面的颜色
-  static Color get onError => const Color(0xFFFFFFFF);
+  static Color get onError => Get.isDarkMode ? const Color(0xFFFFFFFF) : const Color(0xFFFFFFFF);
   // 错误的颜色
-  static Color get dark => const Color(0xFF000000);
+  static Color get black => Get.isDarkMode ? const Color(0xFF000000) : const Color(0xFF000000);
   // 错误颜色上面的颜色
-  static Color get light => const Color(0xFFFFFFFF);
+  static Color get white => Get.isDarkMode ? const Color(0xFFFFFFFF) : const Color(0xFFFFFFFF);
   // 辅助色
-  static Color get secondary => const Color(0xFF25A812);
+  static Color get secondary => Get.isDarkMode ? const Color(0xFF25A812) : const Color(0xFF25A812);
   // 辅助色上面的颜色
-  static Color get onSecondary => const Color(0xFFFFFFFF);
+  static Color get onSecondary => Get.isDarkMode ? const Color(0xFFFFFFFF) : const Color(0xFFFFFFFF);
 
   // 卡片背景颜色
   static Color get cardBackground => Get.isDarkMode ? const Color(0xFF232325) : const Color(0xFFFFFFFF);
@@ -71,15 +72,15 @@ class MyColors {
   // 按钮禁用的背景颜色
   static Color get buttonDisable => Get.isDarkMode ? const Color(0xFF4F4F53) : const Color(0xFFD1D1D1);
   // 取消按钮的背景颜色
-  static Color get buttonCancel => Get.isDarkMode ? const Color(0xFF4F4F53) : const Color(0xFFCBCCD0);
+  static Color get buttonCancel => Get.isDarkMode ? const Color(0xFF4F4F53) : const Color(0xFF8796C6);
   // 取消按钮的文字颜色
-  static Color get onButtonCancel => Get.isDarkMode ? const Color(0xFFFFFFFF) : const Color(0xFF000000);
+  static Color get onButtonCancel => Get.isDarkMode ? const Color(0xFFFFFFFF) : const Color(0xFFFFFFFF);
   // 按钮禁用状态下的文字颜色
   static Color get onButtonDisable => Get.isDarkMode ? const Color(0xFFAFAFB9) : const Color(0xFF828489);
   // 按钮按下时的背景颜色
-  static Color get buttonPressed =>  const Color(0xFF7800F8);
+  static Color get buttonPressed =>  Get.isDarkMode ? const Color(0xFF7800F8) : const Color(0xFF7800F8);
   // 按钮按下时，按钮上面的颜色
-  static Color get onButtonPressed =>  const Color(0xFFFFFFFF);
+  static Color get onButtonPressed => Get.isDarkMode ? const Color(0xFFFFFFFF) : const Color(0xFFFFFFFF);
   // 按钮禁用的背景颜色
   static Color get buttonUnselect => Get.isDarkMode ? const Color(0xFF4F4F53) : const Color(0xFFF3F4F7);
   // 按钮禁用状态下的文字颜色
@@ -91,7 +92,7 @@ class MyColors {
   // appBar 背景渐变色 - 起始位置
   static Color get appBarGradientStart => Get.isDarkMode ? const Color(0xFF3A3A4B) : const Color(0xFFD7E2FF);
   // appBar 背景渐变色 - 终止位置
-  static Color get appBarGradientEnd => background;
+  static Color get appBarGradientEnd => Get.isDarkMode ? const Color(0xFF151516) : const Color(0xFFF5F8FC);
   // appBar 上面的文字颜色
   static Color get onaAppBar => Get.isDarkMode ? const Color(0xFFFFFFFF) : const Color(0xFF000000);
 

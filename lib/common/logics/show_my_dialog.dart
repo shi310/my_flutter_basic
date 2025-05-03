@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import '../common.dart';
+
 Future<void> showMyDialog({
-  String? title,
-  String? content,
+  Widget? title,
+  Widget? content,
   bool isDismissible = true,
   Color? backgroundColor,
   String? confirmText,
@@ -13,19 +15,24 @@ Future<void> showMyDialog({
   double? margin,
   double? borderRadius,
 }) async {
-  final titleStyle = const TextStyle(fontSize: 16);
-  final contentStyle = const TextStyle(fontSize: 13);
-
-  final cancelButton = ElevatedButton(
-    child: Text(cancelText ?? '取消'),
+  final cancelButton = FilledButton(
+    style: FilledButton.styleFrom(
+      backgroundColor: MyColors.buttonCancel,
+      foregroundColor: MyColors.onButtonCancel,
+    ),
+    child: Text(cancelText ?? MyLanguage.confirm.tr),
     onPressed: () {
       Get.back();
       onCancel?.call();
     },
   );
 
-  final confirmButton = ElevatedButton(
-    child: Text(confirmText ?? '确认'),
+  final confirmButton = FilledButton(
+    style: FilledButton.styleFrom(
+      backgroundColor: MyColors.primary,
+      foregroundColor: MyColors.onPrimary,
+    ),
+    child: Text(confirmText ?? MyLanguage.cancel.tr),
     onPressed: () async {
       Get.back(result: 'Dialog Result');
       onConfirm?.call();
@@ -34,27 +41,44 @@ Future<void> showMyDialog({
 
   final column = Column(
     mainAxisSize: MainAxisSize.min,
-    crossAxisAlignment: CrossAxisAlignment.start,
+    crossAxisAlignment: CrossAxisAlignment.center,
     children: [
-      if (title != null) Text(title, style: titleStyle),
+      if (title != null) title,
       if (content != null && title != null) SizedBox(height: 16),
-      if (content != null)  Flexible(child: SingleChildScrollView(scrollDirection: Axis. vertical, child: Text(content, style: contentStyle))),
+      if (content != null)
+        Flexible(
+          child: SingleChildScrollView(
+            scrollDirection: Axis. vertical,
+            child: ConstrainedBox(constraints: BoxConstraints(minHeight: 60), child: Center(child: content)),
+          ),
+        ),
       if ((title != null || content != null) && (confirmText != null || cancelText != null || onConfirm != null || onCancel != null)) SizedBox(height: 16),
       if (confirmText != null || cancelText != null || onConfirm != null || onCancel != null)
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            if (cancelText != null || onCancel != null) cancelButton,
+            if (cancelText != null || onCancel != null) Expanded(child: cancelButton),
             if ((cancelText != null || onCancel != null) && (confirmText != null || onConfirm != null)) SizedBox(width: 10),
-            if (confirmText != null || onConfirm != null) confirmButton,
+            if (confirmText != null || onConfirm != null) Expanded(child: confirmButton),
           ],
         ),
     ],
   );
 
   final child = Container(
-    padding: EdgeInsets.fromLTRB(24, 24, 24, cancelText != null || onCancel != null || confirmText != null || onConfirm != null ? 16 : 28),
+    decoration: BoxDecoration(
+      gradient: LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          MyColors.appBarGradientStart,
+          MyColors.appBarGradientEnd,
+        ],
+        stops: const [0.0, 0.33],
+      ),
+    ),
+    padding: EdgeInsets.fromLTRB(16, 16, 16, 16),
     child: column,
   );
 
@@ -76,7 +100,7 @@ Future<void> showMyDialog({
   );
 
   if (isDismissible == false && result == null) {
-    showMyDialog(
+    await showMyDialog(
       title: title,
       content: content,
       isDismissible: isDismissible,

@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:encrypt/encrypt.dart';
 import 'package:flutter/services.dart';
 
@@ -13,16 +12,8 @@ extension StringExtension on String {
       mode: AESMode.ecb,
       padding: 'PKCS7',
     ));
-    final encrypted = <String>[];
-
-    const chunkSize = 256;
-    for (int i = 0; i < length; i += chunkSize) {
-      final chunk = substring(i, i + chunkSize > length ? length : i + chunkSize);
-      final encryptedChunk = encrypt.encrypt(chunk, iv: iv).base64;
-      encrypted.add(encryptedChunk);
-    }
-
-    return encrypted.join(':::');
+    final encrypted = encrypt.encrypt(this, iv: iv);
+    return encrypted.base64;
   }
 
   /// 解密字符串
@@ -37,7 +28,17 @@ extension StringExtension on String {
       padding: 'PKCS7',
     ));
 
-    return split(':::').map((chunk) => encrypt.decrypt64(chunk, iv: iv)).join();
+    return encrypt.decrypt64(this, iv: iv);
+  }
+
+  /// 转int
+  int? toInt() {
+    return int.tryParse(this);
+  }
+
+  /// 转double
+  double? toDouble() {
+    return double.tryParse(this);
   }
 
   /// 校验中文名字
@@ -66,23 +67,28 @@ extension StringExtension on String {
   }
 
   /// 格式化 JSON
-  String format() {
+  String formatJson() {
     try {
-      final jsonData = jsonDecode(this);
-      String formattedJson = const JsonEncoder.withIndent('  ').convert(jsonData);
-      return formattedJson;
-    } catch (_) {
+      final dynamic jsonData = jsonDecode(this);
+
+      if (jsonData is Map || jsonData is List) {
+        final formattedJson = const JsonEncoder.withIndent('  ').convert(jsonData);
+        return formattedJson;
+      } else {
+        return this;
+      }
+    } catch (e) {
       return this;
     }
   }
 
   /// 格式化 JSON
-  dynamic toJson() {
+  Map<String, dynamic> toJson() {
     try {
       final jsonData = jsonDecode(this);
       return jsonData;
     } catch (_) {
-      return this;
+      return {};
     }
   }
 

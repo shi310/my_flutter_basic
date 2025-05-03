@@ -12,11 +12,11 @@ dependencies:
     sdk: flutter
   flutter_web_plugins:
     sdk: flutter
-  web: ^1.1.0
+  web: ^0.5.0
   plugin_platform_interface: ^2.1.8
 
   # 扫码
-  mobile_scanner: ^6.0.2
+  mobile_scanner: ^6.0.10
 
   # 相册图片选择
   image_picker: ^1.1.2

@@ -1,90 +1,58 @@
-part of 'my_theme.dart';
+import 'package:flutter/material.dart';
+
+import 'my_colors.dart';
 
 class MyStyles {
-  static TextStyle get inputHint => TextStyle(color: MyColors.inputHint, fontSize: 14);
-  static TextStyle get inputText => TextStyle(color: MyColors.inputText, fontSize: 14);
-  static TextStyle get inputError => TextStyle(color: MyColors.error, fontSize: 14);
-  static TextStyle get inputBankTitle => TextStyle(color: MyColors.inputText, fontSize: 14);
+  // 输入框的 hintText 样式
+  static TextStyle inputHint = TextStyle(color: MyColors.inputHint, fontSize: MyFontSize.body.value);
+  // 输入框文本的样式
+  static TextStyle inputText = TextStyle(color: MyColors.inputText, fontSize: MyFontSize.body.value);
+  // 输入框文本的样式
+  static TextStyle inputError = TextStyle(color: MyColors.error, fontSize: MyFontSize.body.value);
+  // 输入框银行卡标题
+  static TextStyle inputBankTitle = TextStyle(color: MyColors.inputText, fontSize: MyFontSize.body.value);
 
-  static TextStyle get label => TextStyle(color: MyColors.textDefault, fontSize: 14, height: 0);
-  static TextStyle get labelSmall => TextStyle(color: MyColors.textDefault.withValues(alpha: 0.6), fontSize: 14, height: 0);
-  static TextStyle get labelBig => TextStyle(color: MyColors.textDefault, fontSize: 16, height: 0);
-  static TextStyle get labelBigger => TextStyle(color: MyColors.textDefault, fontSize: 18, height: 0);
-  static TextStyle get labelBiggest => TextStyle(color: MyColors.textDefault, fontSize: 22, height: 0);
-
-  static TextStyle get labelPrimary => TextStyle(color: MyColors.primary, fontSize: 14, height: 0);
-  static TextStyle get labelPrimaryBig => TextStyle(color: MyColors.primary, fontSize: 16, height: 0);
-  static TextStyle get labelPrimaryBigger => TextStyle(color: MyColors.primary, fontSize: 18, height: 0);
-  static TextStyle get labelPrimaryBiggest => TextStyle(color: MyColors.primary, fontSize: 22, height: 0);
-
-  static TextStyle get labelRed => TextStyle(color: MyColors.error, fontSize: 14);
-  static TextStyle get labelRedBig => TextStyle(color: MyColors.error, fontSize: 16);
-  static TextStyle get labelRedBigger => TextStyle(color: MyColors.error, fontSize: 18);
-  static TextStyle get labelGreen => TextStyle(color: MyColors.secondary, fontSize: 14);
-  static TextStyle get labelGreenBig => TextStyle(color: MyColors.secondary, fontSize: 16);
-  static TextStyle get labelGreenBigger => TextStyle(color: MyColors.secondary, fontSize: 18);
-
-  static TextStyle get labelLight => TextStyle(color: MyColors.light, fontSize: 14, height: 0);
-  static TextStyle get labelLightBig => TextStyle(color: MyColors.light, fontSize: 16, height: 0);
-  static TextStyle get labelLightBigger => TextStyle(color: MyColors.light, fontSize: 18, height: 0);
-  static TextStyle get labelLightBiggest => TextStyle(color: MyColors.light, fontSize: 22, height: 0);
-
-  static TextStyle get content => TextStyle(color: MyColors.textDefault, fontSize: 14, height: 1.5);
-  static TextStyle get contentLight => TextStyle(color: MyColors.light, fontSize: 14, height: 1.5);
-  static TextStyle get contentSmall => TextStyle(color: MyColors.textDefault.withValues(alpha: 0.6), fontSize: 14, height: 1.5);
-  static TextStyle get contentBig => TextStyle(color: MyColors.textDefault, fontSize: 16, height: 1.5);
-  static TextStyle get contentBigger => TextStyle(color: MyColors.textDefault, fontSize: 18, height: 1.5);
-  static TextStyle get contentBiggest => TextStyle(color: MyColors.textDefault, fontSize: 22, height: 1.5);
-
-  // appBar的文字样式
-  static TextStyle get appBarTitle => TextStyle(color: MyColors.onaAppBar, fontSize: 18);
-  IconThemeData get appBarIconThemeData => IconThemeData(color: MyColors.onaAppBar, size: 18);
-
-  static TextStyle get buttonText => const TextStyle(fontSize: 14);
-
-  // 长按钮的样式
-  ButtonStyle getButtonFilledLong({Color? textColor, Color? buttonColor, double? radius}) => ButtonStyle(
-    textStyle: WidgetStateProperty.all<TextStyle?>(buttonText),
-    backgroundColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
-      if (states.contains(WidgetState.pressed)) return MyColors.buttonPressed;
-      if (states.contains(WidgetState.disabled)) return MyColors.buttonDisable;
-      return buttonColor ?? MyColors.primary;
-    }),
-    foregroundColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
-      if (states.contains(WidgetState.pressed)) return MyColors.onPrimary;
-      if (states.contains(WidgetState.disabled)) return MyColors.onButtonDisable;
-      return textColor ?? MyColors.onPrimary;
-    }),
-    minimumSize: WidgetStateProperty.all<Size>(const Size(double.infinity, 40)),
-    shape: WidgetStateProperty.all<OutlinedBorder>(
-      RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(radius ?? 10),
-      ),
-    ),
+  // 获取焦点时的输入框边框样式
+  static InputBorder inputBorderFocus = OutlineInputBorder(
+    borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+    borderSide: BorderSide(color: MyColors.primary, width: 1),
   );
 
-  // 短按钮的样式
-  ButtonStyle getButtonFilledShort({Color? textColor, Color? buttonColor, double? radius}) => ButtonStyle(
-    textStyle: WidgetStateProperty.all<TextStyle?>(buttonText),
-    backgroundColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
-      if (states.contains(WidgetState.pressed)) return MyColors.buttonPressed;
-      if (states.contains(WidgetState.disabled)) return MyColors.buttonDisable;
-      return buttonColor ?? MyColors.primary;
-    }),
-    foregroundColor: WidgetStateProperty.resolveWith<Color?>((Set<WidgetState> states) {
-      if (states.contains(WidgetState.disabled)) return MyColors.onButtonDisable;
-      return textColor ?? MyColors.onPrimary;
-    }),
-    shape: WidgetStateProperty.all<OutlinedBorder?>(RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius ?? 8)),),
+  // 正常情况下的输入框边框样式
+  static InputBorder inputBorder = OutlineInputBorder(
+    borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+    borderSide: BorderSide(color: MyColors.inputBorder, width: 1),
   );
 
-  // 文字按钮的样式
-  ButtonStyle getButtonText({Color? textColor, double? fontSize, double? radius}) => TextButton.styleFrom(
-    textStyle: TextStyle(
-      fontSize: fontSize ?? 14,
-      height: 0
-    ),
-    foregroundColor: textColor ?? MyColors.onBackground,
-    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius ?? 8)),
+  // 错误情况下的输入框边框样式
+  static InputBorder inputBorderError = OutlineInputBorder(
+    borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+    borderSide: BorderSide(color: MyColors.error, width: 1),
   );
+
+  // 输入框禁用时的边框样式
+  static InputBorder inputBorderDisable = OutlineInputBorder(
+    borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+    borderSide: BorderSide(color: MyColors.inputBorder.withValues(alpha: 0), width: 1),
+  );
+}
+
+enum MyFontSize {
+  label(10.0),
+  bodySmall(12.0),
+  body(14.0),
+  bodyLarge(16.0),
+  titleSmall(18.0),
+  title(20.0),
+  titleLarge(22.0),
+  headlineSmall(24.0),
+  headline(26.0),
+  headlineLarge(28.0),
+  displaySmall(30.0),
+  display(32.0),
+  displayLarge(34.0);
+
+  final double value;
+
+  const MyFontSize(this.value);
 }

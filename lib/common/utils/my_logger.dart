@@ -1,6 +1,8 @@
 import 'dart:collection';
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
+
 class MyLogger {
   static final MyLogger _instance = MyLogger._internal();
   factory MyLogger() => _instance;
@@ -13,12 +15,18 @@ class MyLogger {
   bool _isExecuting = false;
 
   void _l() {
+    if (kReleaseMode) {
+      return;
+    }
     _addTask(() async {
       log("-" * 120);
     });
   }
 
   void _w(String text) {
+    if (kReleaseMode) {
+      return;
+    }
     final timestamp = DateTime.now().toIso8601String();
     _addTask(() async {
       log('[$timestamp] $text');

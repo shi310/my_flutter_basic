@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:openinstall_flutter_plugin/openinstall_flutter_plugin.dart';
 import 'package:shorebird_code_push/shorebird_code_push.dart';
 
 import '../common.dart';
@@ -23,7 +24,7 @@ class UserController extends GetxController with WidgetsBindingObserver {
   List<String> wssUrlList = [];
 
   // 用户 token
-  String userToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVVUlEIjoiMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwIiwiSUQiOjMwLCJVc2VybmFtZSI6ImZ1Z3VpMDAxIiwiUGhvbmUiOiIxNTgwNTA2MDAwMSIsIkF1dGhvcml0eUlkIjowLCJBY2NvdW50VHlwZSI6MSwiSXNBdXRoIjozLCJCdWZmZXJUaW1lIjo4NjQwMCwiaXNzIjoicW1QbHVzIiwiYXVkIjpbIkdWQSJdLCJleHAiOjE3NDQyNjc0OTgsIm5iZiI6MTc0MzY2MjY5OH0.v0zbLVTCbtHdyXJ0f91S0OkKNcybzV4mwb3b0Lp2tMI';
+  String userToken = '';
 
   // 热更新定时器
   Timer? timerHotUpdate;
@@ -38,13 +39,16 @@ class UserController extends GetxController with WidgetsBindingObserver {
   Timer? _disconnectTimer;
 
   // 是否使用过APP
-  String isUsedApp = '1';
+  String isUsedApp = '';
 
   // localTag
   MyLocaleMode? myLocaleMode;
 
   // themeModeTag
   MyThemeMode? myThemeMode;
+
+  // open_install
+  OpeninstallFlutterPlugin? openInstallFlutterPlugin;
 
   @override
   void onReady() {
@@ -97,11 +101,12 @@ class UserController extends GetxController with WidgetsBindingObserver {
   void _onSystemThemeModeLister() {
     MyLogger.w('检测到系统主题变化...');
 
-    if (myThemeMode != null) {
-      return;
-    }
-
-    MyTheme.update(mode: MyThemeMode.system);
+    // 这里的代码不要删掉了
+    // if (myThemeMode != null) {
+    //   return;
+    // }
+    //
+    // MyTheme.update(mode: MyThemeMode.system);
   }
 
   @override

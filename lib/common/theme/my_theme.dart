@@ -2,11 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:my_flutter_basic/common/common.dart';
-
-part 'my_colors.dart';
-part 'my_styles.dart';
-part 'my_icons.dart';
+import '../common.dart';
 
 class MyTheme {
   static final MyTheme _instance = MyTheme._internal();
@@ -65,7 +61,8 @@ class MyTheme {
   ThemeData get light => ThemeData(
     platform: TargetPlatform.iOS,
     colorScheme: ColorScheme.fromSeed(
-      seedColor: Colors.blue,
+      primary: MyColors.primary,
+      seedColor: MyColors.primary,
       brightness: Brightness.light,
     ),
     useMaterial3: true,
@@ -75,7 +72,8 @@ class MyTheme {
   ThemeData get dark => ThemeData(
     platform: TargetPlatform.iOS,
     colorScheme: ColorScheme.fromSeed(
-      seedColor: Colors.blue,
+      primary: MyColors.primary,
+      seedColor: MyColors.primary,
       brightness: Brightness.dark,
     ),
     useMaterial3: true,

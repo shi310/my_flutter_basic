@@ -1,37 +1,41 @@
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
-import 'package:my_flutter_basic/common/common.dart';
-
-
+import '../../views/views.dart';
+import '../common.dart';
 
 /// 第一次欢迎页面
 class MiddlewareIndex extends GetMiddleware {
   @override
   RouteSettings? redirect(String? route) {
-    Future.delayed(Duration.zero, () async {
-      showMyLoading();
-      await getEnvironment();
-      hideMyLoading();
-    });
-
-    // 这里可以请求一些公共数据和配置
-    // 不需要 token 的接口
-    // ...
+    // 跳转目标页面后的逻辑
+    // 这里会请求一些数据
+    Future.delayed(Duration.zero, () async => await _getData());
 
     if (UserController.to.isUsedApp.isEmpty) {
       return null;
     }
 
     if (UserController.to.userToken.isNotEmpty) {
-      // 这里请求首页的数据
-      // 这个时候已经有token了
-      // ...
-      return const RouteSettings(name: MyRoutes.frameView);
+      return const RouteSettings(name: MyRoutes.homeView);
     }
 
-    // 这里是去登陆页面
-    // 如果需要单独请求登陆页面的数据可以在这里请求
-    // ...
     return const RouteSettings(name: MyRoutes.loginView);
   }
+}
+
+Future<void> _getData() async {
+  showMyLoading();
+  await Future.delayed(MyConfig.time.pageTransition);
+  await getEnvironment(
+    onNext: () async {
+      if (Get.isRegistered<LoginController>()) {
+        final controller = Get.find<LoginController>();
+        await controller.getPageData();
+      } else if (Get.isRegistered<HomeController>()) {
+        final controller = Get.find<HomeController>();
+        await controller.getPageData();
+      }
+    }
+  );
+  hideMyLoading();
 }

@@ -1,5 +1,5 @@
 import 'package:app_links/app_links.dart';
-import 'package:my_flutter_basic/common/common.dart';
+import '../common.dart';
 
 Future<void> initDeepLink() async {
   final appLinks = AppLinks();

@@ -1,8 +1,6 @@
 import 'package:get/get.dart';
-import 'package:my_flutter_basic/common/common.dart';
-import 'package:my_flutter_basic/views/games/tetris/binding.dart';
-import 'package:my_flutter_basic/views/games/tetris/view.dart';
-import 'package:my_flutter_basic/views/views.dart';
+import '../../views/views.dart';
+import '../common.dart';
 
 class MyPages {
   // 未知页面
@@ -30,11 +28,39 @@ class MyPages {
       binding: LoginBinding(),
     ),
 
-    // 俄罗斯方块
+    // 首页
     GetPage(
-      name: MyRoutes.tetrisView,
-      page: () => const TetrisView(),
-      binding: TetrisBinding(),
+      name: MyRoutes.homeView,
+      page: () => const HomeView(),
+      binding: HomeBinding(),
+    ),
+
+    // 客服列表
+    GetPage(
+      name: MyRoutes.customerListView,
+      page: () => const CustomerListView(),
+      binding: CustomerListBinding(),
+    ),
+
+    // 客服常见问题列表
+    GetPage(
+      name: MyRoutes.customerFaqListView,
+      page: () => const CustomerFaqListView(),
+      binding: CustomerFaqListBinding(),
+    ),
+
+    // 客服常见问题详情
+    GetPage(
+      name: MyRoutes.customerFaqInfoView,
+      page: () => const CustomerFaqInfoView(),
+      binding: CustomerFaqInfoBinding(),
+    ),
+
+    // 客服对话页面
+    GetPage(
+      name: MyRoutes.customerChatView,
+      page: () => const CustomerChatView(),
+      binding: CustomerChatBinding(),
     ),
   ];
 }

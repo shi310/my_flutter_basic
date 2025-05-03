@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'package:my_flutter_basic/common/common.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../common.dart';
 
 Future<void> getOptions({
   required List<String> urls,
@@ -11,6 +14,7 @@ Future<void> getOptions({
   if (UserController.to.wssUrlList.isNotEmpty && UserController.to.baseUrlList.isNotEmpty) {
     MyLogger.w('配置已获取请勿重复操作...');
     await onSuccess?.call();
+    return;
   }
 
   final client = HttpClient();
@@ -74,9 +78,15 @@ Future<void> getOptions({
     await onSuccess?.call();
   } else {
     showMyDialog(
-      title: '连接失败',
-      content: '请点击重新按钮重新尝试',
-      onCancel: () {},
+      isDismissible: false,
+      title: Text(MyLanguage.settingErrorTitle.tr, style: TextStyle(
+        fontSize: MyFontSize.titleSmall.value,
+        fontWeight: FontWeight.w600,
+      )),
+      content: Text(MyLanguage.settingErrorContent.tr, style: TextStyle(
+        fontSize: MyFontSize.body.value,
+      )),
+      confirmText: MyLanguage.retry.tr,
       onConfirm: () async {
         showMyLoading();
         await onError?.call();

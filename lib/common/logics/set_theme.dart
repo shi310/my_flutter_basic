@@ -1,4 +1,4 @@
-import 'package:my_flutter_basic/common/common.dart';
+import '../common.dart';
 
 void setThemeLight() {
   MyTheme.update(mode: MyThemeMode.light);

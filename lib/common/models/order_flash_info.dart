@@ -186,10 +186,10 @@ class OrderFlashInfoModel {
   factory OrderFlashInfoModel.fromJson(Map<String, dynamic> json) => OrderFlashInfoModel(
     sysOrderId: json["sysOrderId"] ?? "",
     memberId: json["memberId"] ?? -1,
-    usdtQuantity: json["usdtQuantity"] == null ? 0 : double.parse('${json["usdtQuantity"]}'),
+    usdtQuantity: '${json["usdtQuantity"]}'.toDouble() ?? 0,
     qrCode: json["qrCode"] ?? "",
     exchangeRate: json["exchangeRate"] ?? "",
-    amount: json["amount"] == null ? 0 : double.parse('${json["amount"]}'),
+    amount: '${json["amount"]}'.toDouble() ?? 0,
     pact: json["pact"] ?? "",
     address: json["address"] ?? "",
     memberConfirmAt: json["memberConfirmAt"] ?? 0,

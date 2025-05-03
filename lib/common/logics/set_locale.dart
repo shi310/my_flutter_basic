@@ -1,5 +1,6 @@
-import 'package:my_flutter_basic/common/common.dart';
 import 'package:get/get.dart';
+
+import '../common.dart';
 
 
 

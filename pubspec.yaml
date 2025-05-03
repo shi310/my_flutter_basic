@@ -70,6 +70,24 @@ dependencies:
   # 音频/音效
   audioplayers: ^6.4.0
 
+  # 键盘隐藏
+  flutter_keyboard_visibility: 6.0.0
+
+  # 网易行为验证码
+  captcha_plugin_flutter: ^1.1.9
+
+  # open_install
+  openinstall_flutter_plugin: ^2.5.4
+
+  # 起聊SDK
+  qichatsdk_flutter: ^1.2.1
+
+  # uuid
+  uuid: 4.5.1
+
+  # int64 int32
+  fixnum: ^1.1.1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

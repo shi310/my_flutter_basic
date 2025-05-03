@@ -18,13 +18,15 @@ class MyRoutes {
   static const loginView = '/login';
 
   // 主页面
-  static const frameView = '/frame';
+  static const homeView = '/home';
 
   // 活体检测 / 人脸识别
   static const faceVerifiedView = '/face_verified';
 
   // 客服列表
-  static const customerView = '/customer';
+  static const customerListView = '/customer_list';
+  static const customerFaqListView = '/customer_faq_list';
+  static const customerFaqInfoView = '/customer_faq_info';
   static const customerChatView = '/customer_chat';
 
   // 闪兑详情

@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:get/get_connect/http/src/request/request.dart';
+
+import 'utils.dart';
 
 class MyHttpClient {
   MyHttpClient({
@@ -23,11 +26,13 @@ class MyHttpClient {
     _httpClient?.baseUrl = urls.first;
     _httpClient?.timeout = timeout;
 
-    _httpClient?.addAuthenticator<void>((request) async {
-      request.headers.addAll(headers!);
+    // 添加请求头
+    _httpClient?.addRequestModifier<void>((request) async {
+      request.headers.addAll(headers ?? {});
       return request;
     });
 
+    // 响应处理
     _httpClient?.addResponseModifier((request, response) async {
       await onResponse?.call(request, response);
       return response;
@@ -37,7 +42,7 @@ class MyHttpClient {
   List<String> urls;
   Map<String, String>? headers;
   final Future<void> Function(Request<Object?> request, Response<Object?> response)? onResponse;
-  final Future<dynamic> Function(Response<dynamic>?)? onConnectError;
+  final Future<void> Function(Response<dynamic>?)? onConnectError;
   final int code;
   final Duration timeout;
 
@@ -60,42 +65,44 @@ class MyHttpClient {
   }
 
   void _logConnectError(Response? response) {
-    String headers = const JsonEncoder.withIndent('  ').convert(response?.request?.headers);
-    String parameters = const JsonEncoder.withIndent('  ').convert(response?.request?.url.queryParameters);
+    if (kReleaseMode) {
+      return;
+    }
 
     log("❌" * 80);
     log("❌ 请求地址 => ${response?.request?.url.scheme}://${response?.request?.url.host}${response?.request?.url.path}");
     log("❌ 请求方式 => ${response?.request?.method}");
-    log("❌ 请求头 => $headers");
-    log("❌ 请求参数 => $parameters");
+    log("❌ 请求头 => ${response?.request?.headers.toJsonString().formatJson()}");
+    log("❌ 请求参数 => ${response?.request?.url.queryParameters.toJsonString().formatJson()}");
     log("❌ 错误信息 => ${response?.statusText}");
     log("❌" * 80);
   }
 
-  void _logError(Response? response) {
-    String headers = const JsonEncoder.withIndent('  ').convert(response?.request?.headers);
-    String parameters = const JsonEncoder.withIndent('  ').convert(response?.request?.url.queryParameters);
+  void _logError(Response? response, Map<String, dynamic>? parameters) {
+    if (kReleaseMode) {
+      return;
+    }
 
     log("⚠️" * 80);
     log("⚠️ 请求地址 => ${response?.request?.url.scheme}://${response?.request?.url.host}${response?.request?.url.path}");
     log("⚠️ 请求方式 => ${response?.request?.method}");
-    log("⚠️ 请求头 => $headers");
-    log("⚠️ 请求参数 => $parameters");
-    log("⚠️ 错误信息 => ${response?.statusText}");
+    log("⚠️ 请求头 => ${response?.request?.headers.toJsonString().formatJson()}");
+    log("⚠️ 请求参数 => ${parameters?.toJsonString().formatJson()}");
+    log("⚠️ 返回数据 => ${response?.bodyString.toString().formatJson()}");
     log("⚠️" * 80);
   }
 
-  void _logSuccess(Response? response) {
-    String headers = const JsonEncoder.withIndent('  ').convert(response?.request?.headers);
-    String parameters = const JsonEncoder.withIndent('  ').convert(response?.request?.url.queryParameters);
-    String data = const JsonEncoder.withIndent('  ').convert(json.decode(response?.bodyString ?? ''));
+  void _logSuccess(Response? response, Map<String, dynamic>? parameters) {
+    if (kReleaseMode) {
+      return;
+    }
 
     log("✅" * 80);
     log("✅ 请求地址 => ${response?.request?.url.scheme}://${response?.request?.url.host}${response?.request?.url.path}");
     log("✅ 请求方式 => ${response?.request?.method}");
-    log("✅ 请求头 => $headers");
-    log("✅ 请求参数 => $parameters");
-    log("✅ 返回数据 => $data");
+    log("✅ 请求头 => ${response?.request?.headers.toJsonString().formatJson()}");
+    log("✅ 请求参数 => ${parameters?.toJsonString().formatJson()}");
+    log("✅ 返回数据 => ${response?.bodyString?.formatJson()}");
     log("✅" * 80);
   }
 
@@ -112,12 +119,12 @@ class MyHttpClient {
 
       final responseModel = ResponseModel.fromJson( json.decode(response.bodyString ?? '{}'));
       if (responseModel.code == code) {
-        _logSuccess(response);
+        _logSuccess(response, data);
         final model = onModel != null ? onModel(responseModel.data) : responseModel.data as T;
         await onSuccess?.call(responseModel.code, responseModel.msg, model);
         return;
       } else {
-        _logError(response);
+        _logError(response, data);
         await onError?.call(response);
         return;
       }
@@ -128,7 +135,7 @@ class MyHttpClient {
       if (_urlCount < urls.length) {
         _index = (_index + 1) % urls.length;
         _httpClient?.baseUrl = urls[_index];
-        get<T>(path, data: data, onSuccess: onSuccess, onError: onError, onModel: onModel);
+        await get<T>(path, data: data, onSuccess: onSuccess, onError: onError, onModel: onModel);
         return;
       }
     }
@@ -150,12 +157,12 @@ class MyHttpClient {
 
       final responseModel = ResponseModel.fromJson( json.decode(response.bodyString ?? '{}'));
       if (responseModel.code == code) {
-        _logSuccess(response);
+        _logSuccess(response, data);
         final model = onModel != null ? onModel(responseModel.data) : responseModel.data as T;
         await onSuccess?.call(responseModel.code, responseModel.msg, model);
         return;
       } else {
-        _logError(response);
+        _logError(response, data);
         await onError?.call(response);
         return;
       }
@@ -166,7 +173,7 @@ class MyHttpClient {
       if (_urlCount < urls.length) {
         _index = (_index + 1) % urls.length;
         _httpClient?.baseUrl = urls[_index];
-        post<T>(path, data: data, onSuccess: onSuccess, onError: onError, onModel: onModel);
+        await post<T>(path, data: data, onSuccess: onSuccess, onError: onError, onModel: onModel);
         return;
       }
     }
@@ -193,12 +200,12 @@ class MyHttpClient {
 
       final responseModel = ResponseModel.fromJson( json.decode(response.bodyString ?? '{}'));
       if (responseModel.code == code) {
-        _logSuccess(response);
+        _logSuccess(response, data);
         final model = onModel != null ? onModel(responseModel.data) : responseModel.data as T;
         await onSuccess?.call(responseModel.code, responseModel.msg, model);
         return;
       } else {
-        _logError(response);
+        _logError(response, data);
         await onError?.call(response);
         return;
       }
@@ -209,7 +216,7 @@ class MyHttpClient {
       if (_urlCount < urls.length) {
         _index = (_index + 1) % urls.length;
         _httpClient?.baseUrl = urls[_index];
-        upload<T>(path, data: data, onSuccess: onSuccess, onError: onError, onModel: onModel);
+        await upload<T>(path, data: data, onSuccess: onSuccess, onError: onError, onModel: onModel);
         return;
       }
     }

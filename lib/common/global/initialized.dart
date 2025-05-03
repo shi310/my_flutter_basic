@@ -1,6 +1,7 @@
-import 'package:my_flutter_basic/common/common.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../common.dart';
 
 Future<void> initialized() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,8 +16,12 @@ Future<void> initialized() async {
     initLocale(),
     // 初始化深度链接
     initDeepLink(),
-    // initDeviceInfo
+    // 初始化APP信息
     initDeviceInfo(),
+    // 初始化OpenInstall
+    initOpenInstall(),
+    // 初始化APP数据
+    initAppData(),
   ]);
 }
 
